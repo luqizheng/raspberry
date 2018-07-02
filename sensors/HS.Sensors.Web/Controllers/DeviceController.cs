@@ -9,9 +9,9 @@ namespace HS.Sensors.Web.Controllers
 {
     public class DeviceController : Controller
     {
-        private readonly GarbageProcessor processor;
+        private readonly GarbageTerminal processor;
 
-        public DeviceController(GarbageProcessor processor)
+        public DeviceController(GarbageTerminal processor)
         {
             this.processor = processor;
         }

@@ -16,6 +16,13 @@ namespace HY.IO.Ports
 
         public int PositionIndex { get; set; }
 
+        public Power PowerStatus
+        {
+            get
+            {
+                return controller[PositionIndex];
+            }
+        }
         public void TurnOn()
         {
             controller.Turn(setting.Pulverizer, Power.On);

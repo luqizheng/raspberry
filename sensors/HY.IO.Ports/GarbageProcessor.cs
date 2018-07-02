@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 
 namespace HY.IO.Ports
 {
-    public class GarbageProcessor
+    public class GarbageTerminal
     {
-        public GarbageProcessor(Pulverizer pulverizer,
+        public GarbageTerminal(Pulverizer pulverizer,
             GrayFan grayFan, Pump pump,
              ExhaustMain exhaustMain, ExhaustSlave exhaustSlave)
         {
@@ -28,6 +26,7 @@ namespace HY.IO.Ports
             ExhaustMain.TurnOn();
             ExhaustSlave.TurnOn();
         }
+
 
         public void TurnOff()
         {

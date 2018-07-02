@@ -14,8 +14,8 @@ namespace ConsoleApp1
             var dam404 = new DAM0404(comPath);
 
             var publizer = new DAMPowerController(dam404);
-         //   publizer.Turn(1, Power.On);
-           Console.WriteLine(publizer.GetPowerStatus(1));
+    
+    
 
 
         }

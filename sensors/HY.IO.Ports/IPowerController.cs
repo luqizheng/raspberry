@@ -21,7 +21,12 @@ namespace HY.IO.Ports
         /// <summary>
         /// 状态
         /// </summary>
-        Power GetPowerStatus(int portIndex);
+        void RefreshStatus();
+
+        Power this[int portIndex]
+        {
+            get;
+        }
 
     }
     public enum Speed
@@ -29,7 +34,7 @@ namespace HY.IO.Ports
         Slow,
         Normal,
         Fast,
-      
+
     }
     public interface ITransmissionController : IPowerController
     {

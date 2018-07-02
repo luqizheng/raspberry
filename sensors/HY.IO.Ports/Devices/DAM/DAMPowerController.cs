@@ -9,14 +9,24 @@ namespace HY.IO.Ports.Devices.DAM
     public class DAMPowerController : IPowerController
     {
 
-        public DAMPowerController(DAM damController)
+        public DAMPowerController(DAM damDevice)
         {
-            DamController = damController ?? throw new ArgumentNullException(nameof(damController));
+            DamController = damDevice ?? throw new ArgumentNullException(nameof(damDevice));
         }
         /// <summary>
         /// 
         /// </summary>
         public DAM DamController { get; }
+
+
+        public Power this[int portIndex]
+        {
+            get
+            {
+                return this.DamController.RelayPort[portIndex] ? Power.On : Power.Off;
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -31,15 +41,14 @@ namespace HY.IO.Ports.Devices.DAM
                 return DamController.Close(portIndex);
         }
         /// <summary>
-        /// 
+        /// 刷新 控制器所有端口的状态
         /// </summary>
-        /// <param name="portIndex"></param>
         /// <returns></returns>
-        public Power GetPowerStatus(int portIndex)
+        public void RefreshStatus()
         {
-            DamController.RefreshDeviceStatus();
-           
-            return DamController.RelayPort[portIndex] ? Power.On : Power.Off;
+            DamController.RefreshRelayStatus();
+
+
         }
     }
 }

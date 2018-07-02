@@ -9,10 +9,8 @@ namespace HY.IO.Ports.Devices.DAM
     {
         private readonly byte address;
         protected static Crc crc;
-
+        private DateTime refreshRelayTie = DateTime.Now;
         protected SerialPortDevice device;
-
-
 
         public IDictionary<int, bool> RelayPort { get; } = new Dictionary<int, bool>();
         static DAM()
@@ -45,11 +43,12 @@ namespace HY.IO.Ports.Devices.DAM
 
         public virtual bool Open(int port)
         {
+            var command = MakeOpenCloseCommand(port != -1, port, true);
+            var openByAnother = false;
             lock (this)
             {
 
-                var command = MakeOpenCloseCommand(port != -1, port, true);
-                var openByAnother = false;
+          
                 if (!device.IsOpened)
                 {
                     openByAnother = true;
@@ -69,16 +68,20 @@ namespace HY.IO.Ports.Devices.DAM
         {
             var command = MakeOpenCloseCommand(port != -1, port, false);
             var openByAnother = false;
-            if (!device.IsOpened)
+            lock (this)
             {
-                openByAnother = true;
-                device.Open();
-            }
+             
+                if (!device.IsOpened)
+                {
+                    openByAnother = true;
+                    device.Open();
+                }
 
-            device.Write(command);
-            if (!openByAnother)
-                device.Close();
-            return true;
+                device.Write(command);
+                if (!openByAnother)
+                    device.Close();
+                return true;
+            }
         }
         public string ComPath { get; }
         /// <summary>
@@ -123,26 +126,27 @@ namespace HY.IO.Ports.Devices.DAM
             return bytes[bytes.Length - 2] == checkSum[checkSum.Length - 1] && bytes[bytes.Length - 1] == checkSum[checkSum.Length - 2];
         }
         /// <summary>
-        /// 
+        /// 刷新所有端口的状态
         /// </summary>
-        public void RefreshDeviceStatus()
+        public void RefreshRelayStatus(bool forceRefres = false)
         {
-
+          
             const int port = -1; //查所有
             var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1);
-
-            var openByAnother = false;
-            if (!device.IsOpened)
+            lock (this)
             {
-                openByAnother = true;
-                device.Open();
+                var openByAnother = false;
+                if (!device.IsOpened)
+                {
+                    openByAnother = true;
+                    device.Open();
+                }
+
+                device.Write(command);
+                reset.WaitOne();
+                if (!openByAnother)
+                    device.Close();
             }
-
-            device.Write(command);
-            reset.WaitOne();
-            if (!openByAnother)
-                device.Close();
-
 
         }
 
