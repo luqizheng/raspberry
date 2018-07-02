@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HY.Sensors", "HY.Sensors\HY.Sensors.csproj", "{A6A62324-13A9-4808-9BC3-858DFB29AD43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{1AE333EC-2343-438D-9585-6FB76A9E0630}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HY.IO.Ports", "HY.IO.Ports\HY.IO.Ports.csproj", "{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HS.Sensors.Web", "HS.Sensors.Web\HS.Sensors.Web.csproj", "{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ARM|Any CPU = ARM|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.ARM|Any CPU.ActiveCfg = ARM|Any CPU
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.ARM|Any CPU.Build.0 = ARM|Any CPU
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6A62324-13A9-4808-9BC3-858DFB29AD43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.ARM|Any CPU.ActiveCfg = ARM|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.ARM|Any CPU.Build.0 = ARM|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17331D89-3D1E-4DBE-BCCB-FA82C5B8C36B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.ARM|Any CPU.ActiveCfg = ARM|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.ARM|Any CPU.Build.0 = ARM|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE333EC-2343-438D-9585-6FB76A9E0630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.ARM|Any CPU.ActiveCfg = ARM|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.ARM|Any CPU.Build.0 = ARM|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.ARM|Any CPU.ActiveCfg = ARM|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.ARM|Any CPU.Build.0 = ARM|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF7FA53A-BF95-4F43-BA51-92C4CDCF5E45}
+	EndGlobalSection
+EndGlobal

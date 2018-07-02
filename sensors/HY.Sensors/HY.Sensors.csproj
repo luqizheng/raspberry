@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Configurations>Debug;Release;ARM</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Tempture\DH11.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.14.0" />
+  </ItemGroup>
+
+</Project>
