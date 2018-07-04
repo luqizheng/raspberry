@@ -1,10 +1,11 @@
 ﻿using System.Text;
 
+using Microsoft.Extensions.Logging;
 namespace HY.IO.Ports.Devices.DAM
 {
     public class DAM0404 : DAM
     {
-        public DAM0404(string comPath) : base(comPath)
+        public DAM0404(ILogger<DAM0404> logger, string comPath) : base(logger, comPath)
         {
         }
 

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Text;
+using System.Threading;
 
 namespace HY.IO.Ports
 {
@@ -37,13 +39,15 @@ namespace HY.IO.Ports
             }
         }
         public Action<object, byte[]> DataReceived { get; internal set; }
+        public ILogger Logger { get; }
 #if ARM
         SerialDevice device;
 #else
         SerialPort device;
 #endif
-        public SerialPortDevice(string comPath, BitRate rate)
+        public SerialPortDevice(ILogger logger, string comPath, BitRate rate)
         {
+            Logger = logger;
             this.comPath = comPath;
             this.rate = rate;
 
@@ -52,11 +56,13 @@ namespace HY.IO.Ports
             //arm
             BaudRate rae = (BaudRate)Convert.ToInt32(rate);
             device = new SerialDevice(comPath, rae);
+      
            device.DataReceived += Device_DataReceived;
 #else
             device = new SerialPort(comPath, Convert.ToInt32(rate));
-            device.ReadBufferSize = 16;
+            device.ReadBufferSize = 128;
             device.DataReceived += Device_DataReceived;
+
 #endif
         }
 
@@ -74,12 +80,23 @@ namespace HY.IO.Ports
 #else
         private void Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            if (DataReceived != null)
+            if (DataReceived != null && device.IsOpen)
             {
+                try
+                {
+                    Thread.Sleep(300);//等待300毫秒，结果。否则buffer预计会不事完整的数据
 
-                var bytes = new Byte[device.BytesToRead];
-                device.Read(bytes, 0, device.BytesToRead);
-                DataReceived(this, bytes);
+                    var len = device.BytesToRead;
+
+                    var bytes = new Byte[len];
+                    device.Read(bytes, 0, len);
+                    DataReceived(this, bytes);
+
+                }
+                catch (Exception ex)
+                {
+
+                }
 
             }
         }
@@ -95,7 +112,7 @@ namespace HY.IO.Ports
             device.Close();
         }
 
-        internal void Write(byte[] command)
+        public void Write(byte[] command)
         {
 #if ARM
             device.Write(command);

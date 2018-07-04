@@ -3,9 +3,10 @@
 }
 
 
-
+<div>
+    <button id="refresh">更新状态</button>
+</div>
 <div class="row">
-
 
     <div class="panel">
         <div class="panel-title">
@@ -13,11 +14,11 @@
         </div>
         <div class="panel-body">
             <div id="buttonPanel">
-                <button id="PlasmaGenerator" class="btn btn-default equipment">等离子</button>
-                <button id="GrayFan" class="btn btn-primary equipment">吹灰</button>
-                <button id="Pump" class="btn btn-primary equipment">水泵</button>
-                <button id="ExhaustMain" class="btn btn-default equipment">风机组</button>
-                <button id="ExhaustSlave" class="btn btn-default equipment">风机组</button>
+                <button id="plasmaGenerator" class="btn btn-default equipment">等离子<i class="fa fa-cog"></i></button>
+                <button id="grayFan" class="btn btn-primary equipment">吹灰<i class="fa fa-cog"></i></button>
+                <button id="pump" class="btn btn-primary equipment">水泵 <i class="fa fa-cog"></i></button>
+                <button id="exhaustMain" class="btn btn-default equipment">风机组 <i class="fa fa-cog"></i></button>
+                <button id="exhaustSlave" class="btn btn-default equipment">风机组 <i class="fa fa-cog"></i></button>
 
             </div>
         </div>
@@ -25,15 +26,15 @@
     </div>
 </div>
 
-<div>
+<div class="row">
     <div class="panel">
         <div class="panel-title">
             送料控制
         </div>
         <div class="panel-body">
             <div id="buttonPanel">
-                <button id="Pulverizer" class="btn btn-default equipment">粉碎器</button>
-                <button id="Transfer" class="btn btn-default equipment">传输</button>
+                <button id="pulverizer" class="btn btn-default equipment">粉碎器<i class="fa fa-cog"></i></button>
+                <button id="transfer" class="btn btn-default equipment">传输<i class="fa fa-cog"></i></button>
             </div>
         </div>
 
@@ -42,12 +43,27 @@
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            GarbageTerminal.RefreshPowerStatus(function (status) {
 
+            $("#refresh").click(function () {
 
-            });
+                GarbageTerminal.RefreshPowerStatus(function (status) {
+                    for (var key in status) {
+
+                        $("#" + key + " i").toggleClass("fa-spin", status[key] == 1);
+
+                    }
+
+                });
+            }).click();
+
             $("button.equipment").click(function () {
-                GarbageTerminal[$(this).attr("id")].call(true, function (data) {
+                var $this = $(this);
+                var enable = $this.find("i").hasClass("fa-spin");
+                GarbageTerminal[$this.attr("id")].call(this, !enable, function (data) {
+                    if (data) {
+                        $this.find("i").toggleClass("fa-spin", !enable);
+
+                    }
                     console.log(data);
                 })
 

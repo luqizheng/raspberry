@@ -5,12 +5,12 @@ namespace HY.IO.Ports
 {
     public class ExhaustSlave : Equipment
     {
-        public ExhaustSlave(ITransmissionController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
+        public ExhaustSlave(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
             Controller = controller;
         }
 
-        public ITransmissionController Controller { get; }
+        public IPowerController Controller { get; }
 
         protected override int PortIndex(DeviceSetting setting)
         {

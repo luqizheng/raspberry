@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace HS.Sensors.Web
@@ -28,11 +29,18 @@ namespace HS.Sensors.Web
         {
             services.Configure<DeviceSetting>(options => Configuration.GetSection("DeviceSetting").Bind(options));
 
+            services.AddLogging(logging =>
+            {
+
+                logging.AddConsole();
+                logging.AddDebug();
+            });
 
             services.AddSingleton<DAM>(sp =>
             {
                 var deviceSetting = sp.GetRequiredService<IOptionsMonitor<DeviceSetting>>();
-                return new DAM0808(deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
+                var logger = sp.GetRequiredService<ILogger<DAM0808>>();
+                return new DAM0808(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
             });
             services.AddControllerWatch<DAMPowerController>();
             services.AddSignalR();

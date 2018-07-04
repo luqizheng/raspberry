@@ -8,10 +8,12 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link href="~/css/all.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"    asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/all.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
@@ -30,7 +32,7 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">主控制</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Detail">单项控制</a></li>
-                   
+
                 </ul>
             </div>
         </div>

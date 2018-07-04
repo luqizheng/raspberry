@@ -6,22 +6,27 @@ namespace HY.IO.Ports
     public abstract class Equipment
     {
         private readonly IPowerController controller;
-        private readonly IOptionsMonitor<Extentions.DeviceSetting> setting;
+        private readonly IOptionsMonitor<DeviceSetting> setting;
 
         public Equipment(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
         {
             this.controller = controller;
             this.setting = setting;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="setting"></param>
+        /// <returns></returns>
         protected abstract int PortIndex(DeviceSetting setting);
 
-        public int PositionIndex { get; set; }
 
         public Power PowerStatus
         {
             get
             {
-                return controller[PositionIndex];
+                var index = PortIndex(setting.CurrentValue);
+                return controller[index];
             }
         }
         public void TurnOn()

@@ -1,5 +1,4 @@
-﻿using HY.Sensors.Tempture;
-using HY.SerialPort;
+﻿
 using System;
 using HY.IO.Ports;
 using CRC;
@@ -10,12 +9,34 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            var comPath = "COM3";
-            var dam404 = new DAM0404(comPath);
+            var ports = SerialPortDevice.GetPortNames();
+            SerialPortDevice port = new SerialPortDevice("COM3", BitRate.B9600);
+            //var port = new System.IO.Ports.SerialPort("/dev/ttyUSB0", 9600);
+            /*
+            FE 05 00 00 FF 00 98 35
+             FE 05 00 01 FF 00 C9 F5*/
 
-            var publizer = new DAMPowerController(dam404);
-    
-    
+            //port.PortName = "/dev/ttyUSB0";
+            //port.BaudRate = 9600;
+
+            port.Open();
+            var data = new byte[]
+            {
+                0xFE, 0x05 ,0x00 ,0x01 ,0xFF ,0x00 ,0xc9 ,0xf5
+            };
+
+            //FE 05 00 01 FF 00 C9 F5
+            port.Write(data);
+
+            data = new byte[]
+            {
+                0xFE , 0x05 , 0x00 , 0x00 , 0x00 , 0x00 , 0xD9 , 0xC5
+            };
+            port.Write(data);
+
+            port.Close();
+
+
 
 
         }

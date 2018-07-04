@@ -99,5 +99,16 @@ namespace HS.Sensors.Web.Controllers
 
             return this.Ok(true);
         }
+
+        [HttpPost]
+        public IActionResult Transfer(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.Transfer.TurnOn();
+            else
+                terminal.Transfer.TurnOff();
+
+            return this.Ok(true);
+        }
     }
 }

@@ -1,31 +1,31 @@
 ﻿// Write your JavaScript code.
 window.GarbageTerminal = {
-    Pulverizer: function (bEnable, callback) {
+    pulverizer: function (bEnable, callback) {
         Turn("Pulverizer", bEnable, callback);
     },
 
-    GrayFan: function (bEnable, callback) {
+    grayFan: function (bEnable, callback) {
         Turn("GrayFan", bEnable, callback);
     },
 
 
-    Pump: function (bEnable, callback) {
+    pump: function (bEnable, callback) {
         Turn("Pump", bEnable, callback);
     },
 
-    ExhaustMain: function (bEnable, callback) {
+    exhaustMain: function (bEnable, callback) {
         Turn("ExhaustMain", bEnable, callback);
     },
 
-    ExhaustSlave: function (bEnable, callback) {
+    exhaustSlave: function (bEnable, callback) {
         Turn("ExhaustSlave", bEnable, callback);
     },
 
-    PlasmaGenerator: function (bEnable, callback) {
+    plasmaGenerator: function (bEnable, callback) {
         Turn("PlasmaGenerator", bEnable, callback);
     },
 
-    Transfer: function (bEnable, callback) {
+    transfer: function (bEnable, callback) {
         Turn("Transfer", bEnable, callback);
     },
 

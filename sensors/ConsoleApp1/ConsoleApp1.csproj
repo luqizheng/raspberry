@@ -12,9 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
     <ProjectReference Include="..\HY.IO.Ports\HY.IO.Ports.csproj" />
-    <ProjectReference Include="..\HY.Sensors\HY.Sensors.csproj" />
   </ItemGroup>
 
 </Project>

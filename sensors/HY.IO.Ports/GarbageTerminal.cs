@@ -6,17 +6,18 @@ namespace HY.IO.Ports
     public class GarbageTerminal
     {
         public GarbageTerminal(Pulverizer pulverizer,
-            GrayFan grayFan, Pump pump,
-             ExhaustMain exhaustMain, ExhaustSlave exhaustSlave)
+            GrayFan grayFan, Pump pump, PlasmaGenerator plasmaGenerator,
+             ExhaustMain exhaustMain, ExhaustSlave exhaustSlave,Transfer transfer)
         {
             Pulverizer = pulverizer;
             GrayFan = grayFan;
             this.Pump = pump;
-
+            PlasmaGenerator = plasmaGenerator;
             ExhaustMain = exhaustMain;
             ExhaustSlave = exhaustSlave;
+            Transfer = transfer;
         }
-       
+
         public void TunrOn()
         {
             Pump.TurnOn();
