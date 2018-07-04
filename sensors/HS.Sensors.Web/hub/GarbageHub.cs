@@ -9,7 +9,7 @@ namespace HS.Sensors.Web.hub
 {
     public class GarbageTerminalHub : Microsoft.AspNetCore.SignalR.Hub
     {
-        private readonly GarbageTerminal garbage;
+        private readonly GarbageTerminal Terminal;
         Timer timer;
 
         public IPowerController PowerController { get; }
@@ -17,7 +17,7 @@ namespace HS.Sensors.Web.hub
         public GarbageTerminalHub(GarbageTerminal garbage, IPowerController powerController)
         {
             timer = new Timer(getStatus, null, 1000, 5000);
-            this.garbage = garbage;
+            this.Terminal = garbage;
             PowerController = powerController;
         }
         private void getStatus(object state)
@@ -33,13 +33,13 @@ namespace HS.Sensors.Web.hub
             {
                 Power = new
                 {
-                    ExhaustMain = garbage.ExhaustMain.PowerStatus,
-                    ExhaustSlave = garbage.ExhaustSlave.PowerStatus,
-                    GrayFan = garbage.GrayFan.PowerStatus,
-                    PlasmaGenerator = garbage.PlasmaGenerator.PowerStatus,
-                    Pulverizer = garbage.Pulverizer.PowerStatus,
-                    Pump = garbage.Pump.PowerStatus,
-
+                    ExhaustMain = Terminal.ExhaustMain.PowerStatus,
+                    ExhaustSlave = Terminal.ExhaustSlave.PowerStatus,
+                    GrayFan = Terminal.GrayFan.PowerStatus,
+                    PlasmaGenerator = Terminal.PlasmaGenerator.PowerStatus,
+                    Pulverizer = Terminal.Pulverizer.PowerStatus,
+                    Pump = Terminal.Pump.PowerStatus,
+                    Transfer=Terminal.Transfer.PowerStatus
                 }
 
             };

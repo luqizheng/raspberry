@@ -7,7 +7,8 @@ namespace HY.IO.Ports
 
     public enum Power
     {
-        On, Off
+        Off = 0,
+        On,
     }
 
     public interface IPowerController
@@ -35,14 +36,6 @@ namespace HY.IO.Ports
         Normal,
         Fast,
 
-    }
-    public interface ITransmissionController : IPowerController
-    {
-        /// <summary>
-        /// 越大 越快
-        /// </summary>
-        /// <param name="speed"></param>
-        void Adjst(Speed speed);
     }
 
 }

@@ -12,5 +12,4 @@ namespace HY.IO.Ports.Devices.DAM
 
         protected override int OptocouplerPorts => 4;
     }
-
 }

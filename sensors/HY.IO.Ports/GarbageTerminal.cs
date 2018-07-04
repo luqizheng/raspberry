@@ -16,7 +16,7 @@ namespace HY.IO.Ports
             ExhaustMain = exhaustMain;
             ExhaustSlave = exhaustSlave;
         }
-
+       
         public void TunrOn()
         {
             Pump.TurnOn();
@@ -36,7 +36,7 @@ namespace HY.IO.Ports
             Pump.TurnOff();
             PlasmaGenerator.TurnOff();
         }
-
+        public Transfer Transfer { get; set; }
         /// <summary>
         /// 粉碎器，闸刀
         /// </summary>

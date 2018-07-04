@@ -48,7 +48,7 @@ namespace HY.IO.Ports.Devices.DAM
             lock (this)
             {
 
-          
+
                 if (!device.IsOpened)
                 {
                     openByAnother = true;
@@ -70,7 +70,7 @@ namespace HY.IO.Ports.Devices.DAM
             var openByAnother = false;
             lock (this)
             {
-             
+
                 if (!device.IsOpened)
                 {
                     openByAnother = true;
@@ -122,6 +122,8 @@ namespace HY.IO.Ports.Devices.DAM
         }
         protected bool Verify(byte[] bytes)
         {
+            if (bytes.Length == 1)
+                return true;
             var checkSum = crc.ComputeHash(bytes, 0, bytes.Length - 2);
             return bytes[bytes.Length - 2] == checkSum[checkSum.Length - 1] && bytes[bytes.Length - 1] == checkSum[checkSum.Length - 2];
         }
@@ -130,7 +132,7 @@ namespace HY.IO.Ports.Devices.DAM
         /// </summary>
         public void RefreshRelayStatus(bool forceRefres = false)
         {
-          
+
             const int port = -1; //查所有
             var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1);
             lock (this)
@@ -143,7 +145,7 @@ namespace HY.IO.Ports.Devices.DAM
                 }
 
                 device.Write(command);
-                reset.WaitOne();
+                reset.WaitOne(new TimeSpan(0, 0, 5));
                 if (!openByAnother)
                     device.Close();
             }
@@ -152,12 +154,13 @@ namespace HY.IO.Ports.Devices.DAM
 
         private void Device_DataReceived(object arg1, byte[] arg2)
         {
-            if (!Verify(arg2))
+            if (arg2.Length == 1)
                 return;
+
             switch (arg2[1])
             {
                 case 0x01: //查询
-
+                    if (!Verify(arg2)) return;
                     var data = arg2[3];
                     for (int i = 0; i < this.RelayPortsCount; i++)
                     {

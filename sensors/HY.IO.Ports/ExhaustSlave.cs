@@ -1,19 +1,20 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class ExhaustSlave : Equipment
     {
-        public ExhaustSlave(ITransmissionController controller, EquipmentSetting setting) : base(controller, setting)
+        public ExhaustSlave(ITransmissionController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
             Controller = controller;
         }
 
         public ITransmissionController Controller { get; }
 
-        protected override int PortIndex(EquipmentSetting setting)
+        protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.ExhaustMain;
+            return setting.PowerControllerSetting.ExhaustMain;
         }
     }
 }

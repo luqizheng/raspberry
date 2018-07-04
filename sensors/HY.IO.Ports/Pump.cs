@@ -1,16 +1,17 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class Pump : Equipment
     {
-        public Pump(IPowerController controller, EquipmentSetting setting) : base(controller, setting)
+        public Pump(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
         }
 
-        protected override int PortIndex(EquipmentSetting setting)
+        protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.Pump;
+            return setting.PowerControllerSetting.Pump;
         }
     }
 

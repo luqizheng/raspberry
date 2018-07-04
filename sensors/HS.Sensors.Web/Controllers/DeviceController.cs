@@ -1,80 +1,101 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HY.IO.Ports;
+﻿using HY.IO.Ports;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HS.Sensors.Web.Controllers
 {
+    public class EqipmentParameter
+    {
+        public Power Power { get; set; }
+
+
+    }
     public class DeviceController : Controller
     {
-        private readonly GarbageTerminal processor;
+        private readonly GarbageTerminal terminal;
+        private readonly IPowerController powerController;
 
-        public DeviceController(GarbageTerminal processor)
+        public DeviceController(GarbageTerminal processor, IPowerController powerController)
         {
-            this.processor = processor;
+            this.terminal = processor;
+            this.powerController = powerController;
         }
         public IActionResult Device(bool enable)
         {
             return View();
         }
-
-        public IActionResult Pulverizer(bool enable)
-        {
-            if (enable)
-                processor.Pulverizer.TurnOff();
-            else
-                processor.Pulverizer.TurnOff();
-
-            return this.Ok(true);
-        }
-
-        public IActionResult GrayFan(bool enable)
-        {
-            if (enable)
-                processor.GrayFan.TurnOff();
-            else
-                processor.GrayFan.TurnOff();
-
-            return this.Ok(true);
-        }
-        public IActionResult Pump(bool enable)
-        {
-            if (enable)
-                processor.Pump.TurnOff();
-            else
-                processor.Pump.TurnOff();
-            return this.Ok(true);
-        }
-
    
-        public IActionResult ExhaustMain(bool enable)
+        public IActionResult PowerControllerStatus()
         {
-            if (enable)
-                processor.ExhaustMain.TurnOff();
+            powerController.RefreshStatus();
+            var status = new
+            {
+                    ExhaustMain = terminal.ExhaustMain.PowerStatus,
+                    ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
+                    GrayFan = terminal.GrayFan.PowerStatus,
+                    PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
+                    Pulverizer = terminal.Pulverizer.PowerStatus,
+                    Pump = terminal.Pump.PowerStatus,
+                    Transfer= terminal.Transfer.PowerStatus
+            };
+            return Ok(status);
+        }
+        [HttpPost]
+        public IActionResult Pulverizer(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.Pulverizer.TurnOn();
             else
-                processor.ExhaustMain.TurnOff();
+                terminal.Pulverizer.TurnOff();
 
             return this.Ok(true);
         }
-
-        public IActionResult ExhaustSlave(bool enable)
+        [HttpPost]
+        public IActionResult GrayFan(EqipmentParameter enable)
         {
-            if (enable)
-                processor.ExhaustSlave.TurnOff();
+            if (enable.Power == Power.On)
+                terminal.GrayFan.TurnOn();
             else
-                processor.ExhaustSlave.TurnOff();
+                terminal.GrayFan.TurnOff();
 
             return this.Ok(true);
         }
-
-        public IActionResult PlasmaGenerator(bool enable)
+        [HttpPost]
+        public IActionResult Pump(EqipmentParameter enable)
         {
-            if (enable)
-                processor.PlasmaGenerator.TurnOff();
+            if (enable.Power == Power.On)
+                terminal.Pump.TurnOn();
             else
-                processor.PlasmaGenerator.TurnOff();
+                terminal.Pump.TurnOff();
+            return this.Ok(true);
+        }
+
+        [HttpPost]
+        public IActionResult ExhaustMain(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.ExhaustMain.TurnOn();
+            else
+                terminal.ExhaustMain.TurnOff();
+
+            return this.Ok(true);
+        }
+        [HttpPost]
+        public IActionResult ExhaustSlave(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.ExhaustSlave.TurnOn();
+            else
+                terminal.ExhaustSlave.TurnOff();
+
+            return this.Ok(true);
+        }
+        [HttpPost]
+        public IActionResult PlasmaGenerator(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.PlasmaGenerator.TurnOn();
+            else
+                terminal.PlasmaGenerator.TurnOff();
 
             return this.Ok(true);
         }

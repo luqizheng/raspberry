@@ -1,16 +1,17 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class PlasmaGenerator : Equipment
     {
-        public PlasmaGenerator(IPowerController controller, EquipmentSetting setting) : base(controller, setting)
+        public PlasmaGenerator(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
         }
 
-        protected override int PortIndex(EquipmentSetting setting)
+        protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.PlasmaGenerator;
+            return setting.PowerControllerSetting.PlasmaGenerator;
         }
     }
 

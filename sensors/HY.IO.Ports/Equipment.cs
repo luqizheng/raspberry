@@ -1,18 +1,19 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public abstract class Equipment
     {
         private readonly IPowerController controller;
-        private readonly Extentions.EquipmentSetting setting;
+        private readonly IOptionsMonitor<Extentions.DeviceSetting> setting;
 
-        public Equipment(IPowerController controller, EquipmentSetting setting)
+        public Equipment(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
         {
             this.controller = controller;
             this.setting = setting;
         }
-        protected abstract int PortIndex(EquipmentSetting setting);
+        protected abstract int PortIndex(DeviceSetting setting);
 
         public int PositionIndex { get; set; }
 
@@ -25,12 +26,14 @@ namespace HY.IO.Ports
         }
         public void TurnOn()
         {
-            controller.Turn(setting.Pulverizer, Power.On);
+            var index = PortIndex(setting.CurrentValue);
+            controller.Turn(index, Power.On);
         }
 
         public void TurnOff()
         {
-            controller.Turn(setting.Pulverizer, Power.Off);
+            var index = PortIndex(setting.CurrentValue);
+            controller.Turn(index, Power.Off);
         }
     }
 }

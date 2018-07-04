@@ -1,19 +1,19 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class Pulverizer : Equipment
     {
-        public Pulverizer(IPowerController controller, EquipmentSetting setting) : base(controller, setting)
+        public Pulverizer(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) 
+            : base(controller, setting)
         {
         }
 
-        protected override int PortIndex(EquipmentSetting setting)
+        protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.Pulverizer;
+            return setting.PowerControllerSetting.Pulverizer;
         }
     }
-
-
 
 }

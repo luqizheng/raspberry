@@ -1,16 +1,17 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class GrayFan : Equipment
     {
-        public GrayFan(IPowerController controller, EquipmentSetting setting) : base(controller, setting)
+        public GrayFan(IPowerController controller , IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
         }
 
-        protected override int PortIndex(EquipmentSetting setting)
+        protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.GrayFan;
+            return setting.PowerControllerSetting.GrayFan;
         }
     }
 }
