@@ -10,7 +10,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             var ports = SerialPortDevice.GetPortNames();
-            SerialPortDevice port = new SerialPortDevice("COM3", BitRate.B9600);
+            SerialPortDevice port = new SerialPortDevice(null, "COM3", BitRate.B9600);
             //var port = new System.IO.Ports.SerialPort("/dev/ttyUSB0", 9600);
             /*
             FE 05 00 00 FF 00 98 35

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HY.IO.Ports.Helper;
+using Microsoft.Extensions.Logging;
+using RJCP.IO.Ports;
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Text;
-using System.Threading;
 
 namespace HY.IO.Ports
 {
@@ -30,80 +29,29 @@ namespace HY.IO.Ports
         public bool IsOpened
         {
             get
-            {
-#if ARM
-                return device.IsOpened;
-#else
-                return device.IsOpen;
-#endif
+            {                return device.IsOpen;
+
             }
         }
         public Action<object, byte[]> DataReceived { get; internal set; }
         public ILogger Logger { get; }
-#if ARM
-        SerialDevice device;
-#else
-        SerialPort device;
-#endif
+        SerialPortStream device;
+
         public SerialPortDevice(ILogger logger, string comPath, BitRate rate)
         {
             Logger = logger;
             this.comPath = comPath;
             this.rate = rate;
 
+            device = new SerialPortStream(comPath, Convert.ToInt32(rate));
 
-#if ARM
-            //arm
-            BaudRate rae = (BaudRate)Convert.ToInt32(rate);
-            device = new SerialDevice(comPath, rae);
-      
-           device.DataReceived += Device_DataReceived;
-#else
-            device = new SerialPort(comPath, Convert.ToInt32(rate));
-            device.ReadBufferSize = 128;
-            device.DataReceived += Device_DataReceived;
 
-#endif
         }
 
 
-#if ARM
-       private void Device_DataReceived(object sender, byte[] e)
-        {
-            if (DataReceived != null)
-            {
-              
-                    DataReceived(this, e);
-                
-            }
-        }
-#else
-        private void Device_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            if (DataReceived != null && device.IsOpen)
-            {
-                try
-                {
-                    Thread.Sleep(300);//等待300毫秒，结果。否则buffer预计会不事完整的数据
 
-                    var len = device.BytesToRead;
-
-                    var bytes = new Byte[len];
-                    device.Read(bytes, 0, len);
-                    DataReceived(this, bytes);
-
-                }
-                catch (Exception ex)
-                {
-
-                }
-
-            }
-        }
-#endif
         public void Open()
         {
-
             device.Open();
         }
 
@@ -111,14 +59,24 @@ namespace HY.IO.Ports
         {
             device.Close();
         }
+        public byte[] Read()
+        {
 
+            var len = device.BytesToRead;
+
+            var r = new Byte[len];
+            device.Read(r, 0, len);
+            Logger.LogDebug("Reading {0}", BitHelper.BitToString(r));
+
+            Logger.LogDebug("ARM Reading {0}", BitHelper.BitToString(r));
+            return r;
+        }
         public void Write(byte[] command)
         {
-#if ARM
-            device.Write(command);
-#else
+
+            Logger.LogDebug("ARM Sending {0}", BitHelper.BitToString(command));
             device.Write(command, 0, command.Length);
-#endif
+
         }
     }
 }

@@ -21,7 +21,7 @@ namespace HY.Sensors.Tempture
     /// </summary>
     public class DhtXX
     {
-        private const long MicroSeondsInTicket = 1000l;
+        private const long MicroSeondsInTicket = 1000L;
         private readonly Stopwatch waitTimeout = new Stopwatch();
         private readonly GpioPin pin;
         private readonly SensorType _sensorType;

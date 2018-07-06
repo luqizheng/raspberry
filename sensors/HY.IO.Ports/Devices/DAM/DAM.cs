@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace HY.IO.Ports.Devices.DAM
 {
 
-    public abstract class DAM
+    public abstract class DAM : IDisposable
     {
         private readonly byte address;
         protected static Crc crc;
         private DateTime refreshRelayTie = DateTime.Now;
         protected SerialPortDevice device;
         private object serialLockItem = 1;
-        private int expectLength = 0;
-        private AutoResetEvent atutResetEvet = new AutoResetEvent(false);
+        // private int expectLength = 0;
+        //  private AutoResetEvent atutResetEvet = new AutoResetEvent(false);
         public IDictionary<int, bool> RelayPort { get; } = new Dictionary<int, bool>();
         static DAM()
         {
@@ -38,7 +38,7 @@ namespace HY.IO.Ports.Devices.DAM
 
             var ports = SerialPortDevice.GetPortNames();
             device = new SerialPortDevice(logger, comPath, BitRate.B9600);
-            device.DataReceived += Device_DataReceived;
+            // device.DataReceived += Device_DataReceived;
 
             for (int i = 0; i < this.RelayPortsCount; i++)
             {
@@ -60,22 +60,18 @@ namespace HY.IO.Ports.Devices.DAM
             var openByAnother = false;
             lock (serialLockItem)
             {
-
-
                 if (device.IsOpened)
                 {
                     openByAnother = true;
-
                 }
                 else
                 {
                     device.Open();
                 }
-                atutResetEvet.Reset();
+                //atutResetEvet.Reset();
                 Log(command, "开启");
                 device.Write(command);
-                atutResetEvet.WaitOne();
-                Log(command, "开启-end");
+
                 if (!openByAnother)
                     device.Close();
 
@@ -101,11 +97,9 @@ namespace HY.IO.Ports.Devices.DAM
                     device.Open();
                 }
 
-                atutResetEvet.Reset();
+                //   atutResetEvet.Reset();
                 Log(command, "关闭");
                 device.Write(command);
-                atutResetEvet.WaitOne();
-                Log(command, "关闭-end");
 
 
                 if (!openByAnother)
@@ -181,10 +175,23 @@ namespace HY.IO.Ports.Devices.DAM
                     device.Open();
                 }
 
-                atutResetEvet.Reset();
+                //                atutResetEvet.Reset();
                 Log(command, "刷新状态");
                 device.Write(command);
-                atutResetEvet.WaitOne();
+                var f = DateTime.Now;
+             
+                Thread.Sleep(300);
+                var less = DateTime.Now - f;
+               
+                var arg2 = device.Read();
+                if (!Verify(arg2)) return;
+                var data = arg2[3];
+                for (int i = 0; i < this.RelayPortsCount; i++)
+                {
+                    var bit = 1 << i;
+                    var result = (data & bit);
+                    this.RelayPort[i] = result != 0;
+                }
                 Log(command, "刷新状态-end");
 
                 if (!openByAnother)
@@ -207,35 +214,39 @@ namespace HY.IO.Ports.Devices.DAM
 
         }
 
-        private void Device_DataReceived(object arg1, byte[] arg2)
+        public void Dispose()
         {
-            try
-            {
-                if (arg2.Length == 1)
-                    return;
-                Log(arg2, "接收：");
-
-                switch (arg2[1])
-                {
-                    case 0x01: //查询
-                        if (!Verify(arg2)) return;
-                        var data = arg2[3];
-                        for (int i = 0; i < this.RelayPortsCount; i++)
-                        {
-                            var bit = 1 << i;
-                            var result = (data & bit);
-                            this.RelayPort[i] = result != 0;
-                        }
-
-                        break;
-                }
-            }
-            finally
-            {
-                atutResetEvet.Set();
-
-            }
+            this.device.Close();
         }
+
+        /*  private void Device_DataReceived(object arg1, byte[] arg2)
+          {
+              try
+              {
+                  if (arg2.Length == 1)
+                      return;
+                  Log(arg2, "接收：");
+
+                  switch (arg2[1])
+                  {
+                      case 0x01: //查询
+                          if (!Verify(arg2)) return;
+                          var data = arg2[3];
+                          for (int i = 0; i < this.RelayPortsCount; i++)
+                          {
+                              var bit = 1 << i;
+                              var result = (data & bit);
+                              this.RelayPort[i] = result != 0;
+                          }
+
+                          break;
+                  }
+              }
+              finally
+              {
+                  atutResetEvet.Set();
+
+              } }*/
     }
 
 }
