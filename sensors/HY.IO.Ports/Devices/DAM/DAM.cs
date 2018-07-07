@@ -148,7 +148,7 @@ namespace HY.IO.Ports.Devices.DAM
         }
         protected bool Verify(byte[] bytes)
         {
-            if (bytes.Length == 1)
+            if (bytes.Length <= 1)
                 return true;
             var checkSum = crc.ComputeHash(bytes, 0, bytes.Length - 2);
             return bytes[bytes.Length - 2] == checkSum[checkSum.Length - 1] && bytes[bytes.Length - 1] == checkSum[checkSum.Length - 2];
@@ -179,10 +179,10 @@ namespace HY.IO.Ports.Devices.DAM
                 Log(command, "刷新状态");
                 device.Write(command);
                 var f = DateTime.Now;
-             
+
                 Thread.Sleep(300);
                 var less = DateTime.Now - f;
-               
+
                 var arg2 = device.Read();
                 if (!Verify(arg2)) return;
                 var data = arg2[3];

@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewData["Title"] = "_equipments";
+}
+<style>
+    .equipment {
+       
+    }
+
+        .equipment .col-xs-2 {
+            /*color: #fff;*/
+            padding-left:0px;
+            /*font-weight: bold;*/
+            /*padding-left: 5px;*/
+        }
+
+    .incinerator .panel {
+        /*background-color: #EA9632*/
+    }
+    /* 冷却系统*/
+    .cooler .panel {
+        /*background: #4E80C4*/
+    }
+    /* 净化器 */
+    .filter .panel {
+        /*background-color: #B475C1;*/
+    }
+    /* 初效过滤系统 */
+    .primary-filter .panel {
+        /*background-color: #8275C1*/
+    }
+    /*垃圾入口，包含切碎和传输*/
+    .primary-disposal .panel {
+        /*background-color: #EA3F32*/
+    }
+
+    .water-tower .panel {
+        /*background-color: #4EC4AC*/
+    }
+
+    .grab .panel {
+    }
+
+    .grayFan .panel {
+    }
+
+    .pump {
+    }
+
+    .pulverizer {
+    }
+
+    .transfer {
+    }
+
+    .exhaust {
+    }
+</style>
+<div class="row equipment">
+    <div class="col-xs-4 primary-disposal ">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                送料设备
+            </div>
+            <div class="panel-body">
+
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 碎料</li>
+                    <li class="list-group-item list-group-item-info"><i class="fa fa-cog"></i>  传输</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4 incinerator">
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                水凝塔
+            </div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 水泵 </li>
+                    <li class="list-group-item list-group-item-info"> 水流：正常</li>
+                </ul>
+            </div>
+        </div>
+
+
+        
+    </div>
+
+    <div class="col-xs-4 primary-filter">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                初效过滤器
+            </div>
+            <div class="panel-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"><i class="fa fa-thermometer-empty"></i>温度 <span>50°</span></li>
+                    <li class="list-group-item list-group-item-alert" id="exhaustSlave"><i class="fa fa-cog"></i>风机:<span>是</span></li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+
+<div class="row equipment">
+    <div class="col-xs-6 water-tower">
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                焚烧炉
+            </div>
+            <div class="panel-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"><i class="fa  fa-thermometer-empty"></i> 温度 <span>750°</span></li>
+                    <li class="list-group-item list-group-item-alert"><i class="fa fa-cog"></i>  是否满:<span>是</span></li>
+                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 是否空:<span>否</span></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-xs-6 filter">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                净化器
+            </div>
+            <div class="panel-body">
+
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i>  是否正常启动 <span>是</span> </li>
+                    <li class="list-group-item list-group-item-info" id="exhaustMain"><i class="fa fa-cog"></i> 风机 </li>
+                    <li class="list-group-item list-group-item-info"><i class="fa  fa-thermometer-empty"></i> 湿度：<span>80%</span></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>

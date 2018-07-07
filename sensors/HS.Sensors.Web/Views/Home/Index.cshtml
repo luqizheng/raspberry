@@ -2,30 +2,66 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div class="row" style=" margin-top: 10px;">
+    <div class="col-xs-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <button class="btn btn-danger" id="turn-on" style="width:100%">
+                    <i class="fa fa-cog"></i>启动
+                </button>
+            </div>
 
+            <div class="panel-body">
 
-<div class="row">
-    <div class="panel">
-        <div class="panel-body">
-            <button class="btn btn-danger">
-                启动
-            </button>
-        </div>
-    </div>
+                <button class="btn btn-info" id="once_transfer" style="width:100%;margin-bottom:10px;height:154px;">启动送料</button>
 
-    <div class="panel">
-        <div class="panel-body">
-            <div>
-                <button class="btn btn-default">启动送料</button>
-                <button class="btn btn-default">持续送料</button>
+                <button class="btn btn-success" id="auto_transfer" style="width:100%;height:154px">持续送料</button>
+
             </div>
         </div>
     </div>
+
+
+
+
+    <div class="col-xs-9">
+        @Html.Partial("_equipments")
+    </div>
+
+
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
 
 
-    });
-</script>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //总体启动
+            $("#turn-on").click(function () {
+                var t = $(this);
+                var text = $.trim($(this).text());
+                var enable = text == "启动";
+                GarbageTerminal.turn(enable, function (data) {
+                    if (data) {
+                        t.text(enable ? "停止" : "启动");
+                        t.toggleClass("btn-danger", !enable);
+                        t.toggleClass("btn-success", enable)
+                    }
+                })
+            })
+            //送料
+            $("#auto_transfer").click(function () {
+
+                startTransfer()
+            })
+
+            subcriptStatus(function (status) {
+
+
+            })
+        });
+    </script>
+
+}

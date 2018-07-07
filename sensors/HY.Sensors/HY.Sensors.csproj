@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;ARM</Configurations>
   </PropertyGroup>
 
@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.14.0" />
+    <PackageReference Include="Unosquare.Raspberry.IO" Version="0.15.1" />
   </ItemGroup>
 
 </Project>

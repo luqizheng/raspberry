@@ -23,19 +23,19 @@ namespace HS.Sensors.Web.Controllers
         {
             return View();
         }
-   
+
         public IActionResult PowerControllerStatus()
         {
             powerController.RefreshStatus();
             var status = new
             {
-                    ExhaustMain = terminal.ExhaustMain.PowerStatus,
-                    ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
-                    GrayFan = terminal.GrayFan.PowerStatus,
-                    PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
-                    Pulverizer = terminal.Pulverizer.PowerStatus,
-                    Pump = terminal.Pump.PowerStatus,
-                    Transfer= terminal.Transfer.PowerStatus
+                ExhaustMain = terminal.ExhaustMain.PowerStatus,
+                ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
+                GrayFan = terminal.GrayFan.PowerStatus,
+                PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
+                Pulverizer = terminal.Pulverizer.PowerStatus,
+                Pump = terminal.Pump.PowerStatus,
+                Transfer = terminal.Transfer.PowerStatus
             };
             return Ok(status);
         }
@@ -109,6 +109,59 @@ namespace HS.Sensors.Web.Controllers
                 terminal.Transfer.TurnOff();
 
             return this.Ok(true);
+        }
+
+        [HttpGet]
+        public IActionResult TurnOff()
+        {
+            terminal.TurnOff();
+            return this.Ok(true);
+        }
+
+        [HttpGet]
+        public IActionResult TurnOn()
+        {
+            try
+            {
+                terminal.TurnOn();
+                return this.Ok(true);
+            }
+            catch (TerminalException ex)
+            {
+                return this.BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("{doNotStop}")]
+        public IActionResult StartTransfer(bool doNotStop)
+        {
+            try
+            {
+                terminal.StopTransfer();
+                return this.Ok(new { success = true, message = "启动成功" });
+            }
+            catch (TerminalException ex)
+            {
+                return this.BadRequest(new { success = true, message = ex.Message });
+            }
+        }
+
+        [HttpGet()]
+        public IActionResult StopTransfer()
+        {
+            try
+            {
+                terminal.StopTransfer();
+                return this.Ok(new { success = true, message = "停止传输器成功" });
+            }
+            catch (TerminalException ex)
+            {
+                return this.BadRequest(new { success = true, message = ex.Message });
+            }
         }
     }
 }

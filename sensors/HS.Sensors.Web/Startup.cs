@@ -61,7 +61,10 @@ namespace HS.Sensors.Web
             }
 
             app.UseStaticFiles();
-
+            app.UseSignalR(routes =>
+                    {
+                        routes.MapHub<GarbageTerminalHub>("/GarbageTerminal");
+                    });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -69,10 +72,7 @@ namespace HS.Sensors.Web
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            app.UseSignalR(routes =>
-            {
-                routes.MapHub<GarbageTerminalHub>("/GarbageTerminal");
-            });
+
         }
     }
 }

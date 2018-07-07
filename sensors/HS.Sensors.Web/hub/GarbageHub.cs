@@ -1,4 +1,5 @@
 ﻿using HY.IO.Ports;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,31 @@ namespace HS.Sensors.Web.hub
 {
     public class GarbageTerminalHub : Microsoft.AspNetCore.SignalR.Hub
     {
+
         private readonly GarbageTerminal Terminal;
-        Timer timer;
 
-        public IPowerController PowerController { get; }
-
-        public GarbageTerminalHub(GarbageTerminal garbage, IPowerController powerController)
+        public GarbageTerminalHub(GarbageTerminal garbage, ILogger<GarbageTerminalHub> logger)
         {
-            timer = new Timer(getStatus, null, 1000, 5000);
+          
+
             this.Terminal = garbage;
-            PowerController = powerController;
+            Logger = logger;
         }
-        private void getStatus(object state)
+
+        public ILogger<GarbageTerminalHub> Logger { get; }
+
+        protected override void Dispose(bool disposing)
         {
-            PowerController.RefreshStatus();
-            SendMessage().Wait();
+         
+            base.Dispose(disposing);
         }
 
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            return base.OnDisconnectedAsync(exception);
+        }
 
-        public async Task SendMessage()
+        public void SendMessage()
         {
             var status = new
             {
@@ -39,11 +46,12 @@ namespace HS.Sensors.Web.hub
                     PlasmaGenerator = Terminal.PlasmaGenerator.PowerStatus,
                     Pulverizer = Terminal.Pulverizer.PowerStatus,
                     Pump = Terminal.Pump.PowerStatus,
-                    Transfer=Terminal.Transfer.PowerStatus
+                    Transfer = Terminal.Transfer.PowerStatus
                 }
 
             };
-            await Clients.All.SendCoreAsync("status", new[] { status });
+            Logger.LogDebug("send info");
+            Clients.All.SendCoreAsync("status", new object[] { status });
 
         }
     }
