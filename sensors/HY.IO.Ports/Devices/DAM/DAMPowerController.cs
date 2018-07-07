@@ -23,7 +23,9 @@ namespace HY.IO.Ports.Devices.DAM
         {
             get
             {
-                return this.DamController.RelayPort[portIndex] ? Power.On : Power.Off;
+                if (DamController.RelayPort.ContainsKey(portIndex))
+                    return this.DamController.RelayPort[portIndex] ? Power.On : Power.Off;
+                return Power.Off;
             }
         }
 

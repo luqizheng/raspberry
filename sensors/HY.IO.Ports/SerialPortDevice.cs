@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Logging;
 using RJCP.IO.Ports;
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
+using System.Threading;
 
 namespace HY.IO.Ports
 {
@@ -17,6 +19,14 @@ namespace HY.IO.Ports
         B57600 = 57600,
         B1152000 = 115200
     }
+    public class CommandQueueItem
+    {
+        public byte[] Write { get; set; }
+        public byte[] Read { get; set; }
+
+        public Action<string> Command { get; set; }
+    }
+    public delegate byte[] SyncToWrite(byte[] data);
     public class SerialPortDevice
     {
         public static string GetPortNames()
@@ -29,8 +39,8 @@ namespace HY.IO.Ports
         public bool IsOpened
         {
             get
-            {                return device.IsOpen;
-
+            {
+                return device.IsOpen;
             }
         }
         public Action<object, byte[]> DataReceived { get; internal set; }
@@ -42,10 +52,7 @@ namespace HY.IO.Ports
             Logger = logger;
             this.comPath = comPath;
             this.rate = rate;
-
             device = new SerialPortStream(comPath, Convert.ToInt32(rate));
-
-
         }
 
 
@@ -59,24 +66,20 @@ namespace HY.IO.Ports
         {
             device.Close();
         }
-        public byte[] Read()
+        private Queue<byte[]> commands = new Queue<byte[]>();
+        public byte[] Write(byte[] bytes)
         {
-
-            var len = device.BytesToRead;
-
-            var r = new Byte[len];
-            device.Read(r, 0, len);
-            Logger.LogDebug("Reading {0}", BitHelper.BitToString(r));
-
-            Logger.LogDebug("ARM Reading {0}", BitHelper.BitToString(r));
-            return r;
+            lock (this)
+            {
+                device.Write(bytes, 0, bytes.Length);
+                Thread.Sleep(300);
+                var len = device.BytesToRead;
+                var r = new Byte[len];
+                device.Read(r, 0, len);
+                //Logger.LogDebug("Reading {0}", BitHelper.BitToString(r));
+                return r;
+            }
         }
-        public void Write(byte[] command)
-        {
-
-            Logger.LogDebug("ARM Sending {0}", BitHelper.BitToString(command));
-            device.Write(command, 0, command.Length);
-
-        }
+     
     }
 }

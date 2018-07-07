@@ -7,7 +7,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <button class="btn btn-danger" id="turn-on" style="width:100%">
-                    <i class="fa fa-cog"></i>启动
+                    <i class="fa fa-cog"></i> <span class="text">启动</span>
                 </button>
             </div>
 
@@ -36,32 +36,103 @@
 
 
 @section Scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            //总体启动
-            $("#turn-on").click(function () {
-                var t = $(this);
-                var text = $.trim($(this).text());
-                var enable = text == "启动";
-                GarbageTerminal.turn(enable, function (data) {
-                    if (data) {
-                        t.text(enable ? "停止" : "启动");
-                        t.toggleClass("btn-danger", !enable);
-                        t.toggleClass("btn-success", enable)
-                    }
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $btnTurnOn = $("#turn-on");
+        //总体启动
+        $("#turn-on").click(function () {
+            var t = $(this);
+            var text = $.trim($(this).text());
+            var enable = t.hasClass("on");
+            GarbageTerminal.turn(enable, function (data) {
+                if (data) {
+
+                    SetDeviceEnable(!enable);
+                }
+
+            })
+        })
+        var $once_transfer = $("#once_transfer").click(function () {
+            var isON = $(this).hasClass("on");
+            if (!isON)
+                GarbageTerminal.startTransfer(false, function () {
+                    setTransferModelEnable(!isON, true)
+
                 })
-            })
-            //送料
-            $("#auto_transfer").click(function () {
+            else
+                GarbageTerminal.stopTransfer(function () {
 
-                startTransfer()
-            })
-
-            subcriptStatus(function (status) {
+                    setTransferModelEnable(!isON, true)
+                });
 
 
-            })
-        });
-    </script>
+
+        })
+        //送料
+        var $auto_transfer = $("#auto_transfer").click(function () {
+
+
+            var isON = $(this).hasClass("on");
+            if (!isON)
+                GarbageTerminal.startTransfer(true, function () {
+                    setTransferModelEnable(!isON, true);
+                })
+            else
+                GarbageTerminal.stopTransfer(function () {
+
+                    setTransferModelEnable(!isON, true);
+                });
+
+
+        })
+        /*
+         这里是对 _equipment视图 进行设置
+         */
+        subcriptStatus(function (status) {
+            //设备电源是否启动
+            var enable = status.enable;
+            SetDeviceEnable(enable);
+
+            //送料设备是否启动
+            setTransferModelEnable(status.transferModelEnable);
+
+            for (var key in status.power) {
+                var isOn = status.power[key] == 1;
+                var tar = $("#power_" + key);
+                tar.toggleClass("list-group-item-success", isOn);
+                tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
+
+            }
+        })
+
+        function SetDeviceEnable(enable) {
+            $btnTurnOn.find(".text").text(enable ? "停止" : "启动");
+            $btnTurnOn.toggleClass("btn-danger", !enable);
+            $btnTurnOn.toggleClass("btn-success", enable)
+            $btnTurnOn.toggleClass("on", !enable);
+            $btnTurnOn.find("i:first").toggleClass("fa-spin", enable);
+
+        }
+
+        function setTransferModelEnable(enable, inProcessing) {
+            var currentState = $auto_transfer.hasClass("on");
+
+            if (inProcessing) {
+                $auto_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
+                $once_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
+                return;
+            }
+            console.log(enable, currentState)
+            if (currentState != enable) {
+                $auto_transfer.text(!enable ? "持续送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
+                $once_transfer.text(!enable ? "一次送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
+
+                //$auto_transfer.toggleClass("btn-danger", enable).removeClass("btn-warning");
+            }
+
+
+        }
+    });
+</script>
 
 }

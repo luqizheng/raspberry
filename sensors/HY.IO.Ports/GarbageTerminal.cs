@@ -4,7 +4,16 @@ using System.Threading.Tasks;
 
 namespace HY.IO.Ports
 {
-    public class GarbageTerminal
+    public class GrayFanTimeInfo
+    {
+        public DateTime? Sleep { get; set; }
+        public DateTime? RunTime { get; set; }
+    }
+    public class TransferParameter
+    {
+        public int RunningSeconds { get; set; }
+    }
+    public class GarbageTerminal : IDisposable
     {
 
         CancellationTokenSource terminalTurnOnTask = new CancellationTokenSource();
@@ -27,8 +36,12 @@ namespace HY.IO.Ports
             ExhaustSlave = exhaustSlave;
             Transfer = transfer;
             this.controller = controller;
-            timer = new Timer(getStatus, null, 5000, 5000);
+            timer = new Timer(getStatus, null, 1000, 1000);
+
+            this.GrayFan.Terminal = this;
+
         }
+
 
         private void getStatus(object state)
         {
@@ -49,29 +62,41 @@ namespace HY.IO.Ports
                     && ExhaustSlave.PowerStatus == Power.On;
             }
         }
+        public bool TransferModelEnable
+        {
+            get
+            {
+                return Pulverizer.PowerStatus == Power.On || Transfer.PowerStatus == Power.On;
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
         public void TurnOn()
         {
-            if (turnOffTask != null && !turnOffTask.IsCompleted)
+            if (turnOffTask != null && !turnOffTask.IsCompleted && Enable)
             {
                 throw new TerminalException("正在关闭中，请等完全关闭后再启动.");
             }
-            //无论设备么情况，传输和碎料必须停止
-            this.Pulverizer.TurnOff();
-            this.Transfer.TurnOff();
 
             var token = terminalTurnOnTask.Token;
 
             turnOnTask = Task.Run(() =>
                  {
+                     //无论设备么情况，传输和碎料必须停止
+                     this.Pulverizer.TurnOff();
+                     Thread.Sleep(200);
+                     this.Transfer.TurnOff();
+
                      Pump.TurnOn();
                      Thread.Sleep(5000);
                      PlasmaGenerator.TurnOn();
                      Thread.Sleep(3000);
                      ExhaustMain.TurnOn();
+                     Thread.Sleep(200);
                      ExhaustSlave.TurnOn();
+
+                     this.GrayFan.TurnOn();
                  }, token);
 
         }
@@ -88,43 +113,57 @@ namespace HY.IO.Ports
             this.Pulverizer.TurnOff();
             this.Transfer.TurnOff();
 
-
             var token = terminalTurnOffTask.Token;
 
             turnOffTask = Task.Run(() =>
               {
                   ExhaustMain.TurnOff();
+                  Thread.Sleep(200);
                   ExhaustSlave.TurnOff();
                   Thread.Sleep(10000);
                   Pump.TurnOff();
+                  Thread.Sleep(200);
                   PlasmaGenerator.TurnOff();
+
+                  this.GrayFan.TurnOff();
+
               }, token);
 
         }
-
-        public void StartTransfer(bool DoNotStop)
+        private CancellationTokenSource _transferTokenSource = new CancellationTokenSource();
+        private CancellationToken _transferEquipment;
+        private Task TransferEquipmentRunningTask = null;
+        public void StartTransfer(TransferParameter transfer)
         {
             if (!this.Enable)
                 if (turnOffTask != null && !turnOffTask.IsCompleted)
                 {
                     throw new TerminalException("还没启动，请启动后再执行传输");
                 }
-            Task.Run(() =>
-            {
+            _transferTokenSource = new CancellationTokenSource(transfer.RunningSeconds * 1000);
+            _transferEquipment = _transferTokenSource.Token;
 
-                Pulverizer.TurnOn();
-                Thread.Sleep(10 * 1000);
-                Transfer.TurnOn();
 
-                if (DoNotStop == false)
-                {
-                    Pulverizer.TurnOff();
-                    Thread.Sleep(30 * 1000);
-                }
-                if (DoNotStop == false)
-                    this.Transfer.TurnOff();
 
-            });
+            TransferEquipmentRunningTask = Task.Run(() =>
+             {
+
+                 Pulverizer.TurnOn();
+                 Thread.Sleep(5 * 1000);
+                 Transfer.TurnOn();
+                 var startTime = DateTime.Now;
+                 var now = new TimeSpan(0, 0, 0);
+                 while (now.TotalSeconds < transfer.RunningSeconds)
+                 {
+                     Thread.Sleep(2000);
+                     now = (DateTime.Now - startTime);
+                 }
+
+                 Pulverizer.TurnOff();
+
+                 this.Transfer.TurnOff();
+
+             }, _transferEquipment);
 
         }
 
@@ -137,6 +176,10 @@ namespace HY.IO.Ports
             });
         }
 
+        public void Dispose()
+        {
+            TurnOff();
+        }
 
         public Transfer Transfer { get; set; }
         /// <summary>

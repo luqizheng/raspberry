@@ -6,7 +6,7 @@ namespace HY.IO.Ports
     public abstract class Equipment
     {
         private readonly IPowerController controller;
-        private readonly IOptionsMonitor<DeviceSetting> setting;
+        protected readonly IOptionsMonitor<DeviceSetting> setting;
 
         public Equipment(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
         {
@@ -29,13 +29,13 @@ namespace HY.IO.Ports
                 return controller[index];
             }
         }
-        public void TurnOn()
+        public virtual void TurnOn()
         {
             var index = PortIndex(setting.CurrentValue);
             controller.Turn(index, Power.On);
         }
 
-        public void TurnOff()
+        public virtual void TurnOff()
         {
             var index = PortIndex(setting.CurrentValue);
             controller.Turn(index, Power.Off);

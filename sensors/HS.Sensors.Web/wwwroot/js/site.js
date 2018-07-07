@@ -36,13 +36,15 @@ window.GarbageTerminal = {
     },
 
     turn: function (bEnable, callback) {
-        $.get("/device/Turn" + bEnable ? "On" : "Off", function (data) {
+        $.get("/device/Turn" + (bEnable ? "On" : "Off"), function (data) {
             callback(data);
         })
     },
 
     startTransfer: function (doNotStop, callback) {
-        $.get("/device/StartTransfer/" + doNotStop ? "true" : "false", function (data) {
+        $.post("/device/StartTransfer", {
+            RunningSeconds:doNotStop ? 300 : 30
+        }, function (data) {
             callback(data);
         })
     },
@@ -63,19 +65,20 @@ function Turn(device, bEnable, callback) {
     });
 }
 
-
+var connection
 function subcriptStatus(onStatucChange) {
 
-    var connection = new signalR.HubConnectionBuilder()
+    connection = new signalR.HubConnectionBuilder()
         .withUrl("/GarbageTerminal")
-        .configureLogging(signalR.LogLevel.Debug)
+        .configureLogging(signalR.LogLevel.Trace)
         .build();
     //connection.start().catch(err => console.error(err.toString()));
 
     connection.on("status", (statusData) => {
-        console.log(statusData);
+        //console.log(statusData);
         onStatucChange(statusData);
     });
 
-    connection.start().catch(err => console.error(err.toString()));;
+    connection.start().catch(err => console.error(err.toString()));
+    //connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
 }

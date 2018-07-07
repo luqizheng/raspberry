@@ -4,6 +4,9 @@
     {
         public PowerControllerSetting PowerControllerSetting { get; set; } = new PowerControllerSetting();
 
+        public int GrayFanSleepSeconds = 30;
+        public int GrayFanRunSeconds = 60;
+
     }
 
     public class PowerControllerSetting

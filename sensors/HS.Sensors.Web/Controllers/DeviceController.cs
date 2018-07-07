@@ -124,7 +124,11 @@ namespace HS.Sensors.Web.Controllers
             try
             {
                 terminal.TurnOn();
-                return this.Ok(true);
+                return this.Ok(new
+                {
+                    success = false,
+                    message = "启动中",
+                });
             }
             catch (TerminalException ex)
             {
@@ -136,12 +140,12 @@ namespace HS.Sensors.Web.Controllers
             }
         }
 
-        [HttpGet("{doNotStop}")]
-        public IActionResult StartTransfer(bool doNotStop)
+        [HttpPost]
+        public IActionResult StartTransfer(TransferParameter doNotStop)
         {
             try
             {
-                terminal.StopTransfer();
+                terminal.StartTransfer(doNotStop);
                 return this.Ok(new { success = true, message = "启动成功" });
             }
             catch (TerminalException ex)
@@ -164,4 +168,6 @@ namespace HS.Sensors.Web.Controllers
             }
         }
     }
+
+ 
 }

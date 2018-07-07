@@ -4,12 +4,11 @@
 }
 <style>
     .equipment {
-       
     }
 
         .equipment .col-xs-2 {
             /*color: #fff;*/
-            padding-left:0px;
+            padding-left: 0px;
             /*font-weight: bold;*/
             /*padding-left: 5px;*/
         }
@@ -66,8 +65,8 @@
 
 
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 碎料</li>
-                    <li class="list-group-item list-group-item-info"><i class="fa fa-cog"></i>  传输</li>
+                    <li class="list-group-item " id="power_pulverizer"><i class="fa fa-cog"></i> 碎料</li>
+                    <li class="list-group-item" id="power_transfer"><i class="fa fa-cog"></i>  传输</li>
                 </ul>
 
             </div>
@@ -81,14 +80,14 @@
             </div>
             <div class="panel-body">
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 水泵 </li>
-                    <li class="list-group-item list-group-item-info"> 水流：正常</li>
+                    <li class="list-group-item " id="power_pump"><i class="fa fa-cog"></i> 水泵 </li>
+                    <li class="list-group-item"> 水流：正常</li>
                 </ul>
             </div>
         </div>
 
 
-        
+
     </div>
 
     <div class="col-xs-4 primary-filter">
@@ -99,16 +98,16 @@
             <div class="panel-body">
 
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-success"><i class="fa fa-thermometer-empty"></i>温度 <span>50°</span></li>
-                    <li class="list-group-item list-group-item-alert" id="exhaustSlave"><i class="fa fa-cog"></i>风机:<span>是</span></li>
-
+                    <li class="list-group-item "><i class="fa fa-thermometer-empty"></i>温度 <span>50°</span></li>
+                    <li class="list-group-item list-group-item-alert" id="power_exhaustSlave"><i class="fa fa-cog"></i>风机:<span>是</span></li>
+                    <li class="list-group-item" id="power_grayFan"><i class="fa fa-cog"></i>吹灰风机</li>
                 </ul>
 
             </div>
         </div>
     </div>
 
-   
+
 </div>
 
 <div class="row equipment">
@@ -121,9 +120,10 @@
             <div class="panel-body">
 
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-success"><i class="fa  fa-thermometer-empty"></i> 温度 <span>750°</span></li>
+                    <li class="list-group-item "><i class="fa  fa-thermometer-empty"></i> 温度 <span>750°</span></li>
                     <li class="list-group-item list-group-item-alert"><i class="fa fa-cog"></i>  是否满:<span>是</span></li>
-                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i> 是否空:<span>否</span></li>
+                    <li class="list-group-item "><i class="fa fa-cog"></i> 是否空:<span>否</span></li>
+
                 </ul>
             </div>
         </div>
@@ -134,14 +134,14 @@
     <div class="col-xs-6 filter">
         <div class="panel panel-success">
             <div class="panel-heading">
-                净化器
+                净化器 <i class="fa fa-cog"></i>
             </div>
             <div class="panel-body">
 
                 <ul class="list-group">
-                    <li class="list-group-item list-group-item-success"><i class="fa fa-cog"></i>  是否正常启动 <span>是</span> </li>
-                    <li class="list-group-item list-group-item-info" id="exhaustMain"><i class="fa fa-cog"></i> 风机 </li>
-                    <li class="list-group-item list-group-item-info"><i class="fa  fa-thermometer-empty"></i> 湿度：<span>80%</span></li>
+                    <li class="list-group-item" id="power_plasmaGenerator"><i class="fa fa-cog"></i>  离子发生器 </li>
+                    <li class="list-group-item" id="power_exhaustMain"><i class="fa fa-cog"></i> 风机 </li>
+                    <li class="list-group-item"><i class="fa  fa-thermometer-empty"></i> 湿度：<span>80%</span></li>
                 </ul>
 
             </div>

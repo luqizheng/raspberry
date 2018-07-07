@@ -15,7 +15,7 @@ namespace HY.IO.Ports.Devices.DAM
         protected static Crc crc;
         private DateTime refreshRelayTie = DateTime.Now;
         protected SerialPortDevice device;
-        private object serialLockItem = 1;
+
         // private int expectLength = 0;
         //  private AutoResetEvent atutResetEvet = new AutoResetEvent(false);
         public IDictionary<int, bool> RelayPort { get; } = new Dictionary<int, bool>();
@@ -58,54 +58,52 @@ namespace HY.IO.Ports.Devices.DAM
         {
             var command = MakeOpenCloseCommand(port != -1, port, true);
             var openByAnother = false;
-            lock (serialLockItem)
+
+            if (device.IsOpened)
             {
-                if (device.IsOpened)
-                {
-                    openByAnother = true;
-                }
-                else
-                {
-                    device.Open();
-                }
-                //atutResetEvet.Reset();
-                Log(command, "开启");
-                device.Write(command);
-
-                if (!openByAnother)
-                    device.Close();
-
-                return true;
-
+                openByAnother = true;
             }
+            else
+            {
+                device.Open();
+            }
+            //atutResetEvet.Reset();
+           // Log(command, "开启");
+            device.Write(command);
+
+            if (!openByAnother)
+                device.Close();
+
+            return true;
+
+
 
         }
         public virtual bool Close(int port)
         {
             var command = MakeOpenCloseCommand(port != -1, port, false);
             var openByAnother = false;
-            lock (serialLockItem)
+
+
+            if (device.IsOpened)
             {
+                openByAnother = true;
 
-                if (device.IsOpened)
-                {
-                    openByAnother = true;
-
-                }
-                else
-                {
-                    device.Open();
-                }
-
-                //   atutResetEvet.Reset();
-                Log(command, "关闭");
-                device.Write(command);
-
-
-                if (!openByAnother)
-                    device.Close();
-                return true;
             }
+            else
+            {
+                device.Open();
+            }
+
+            //   atutResetEvet.Reset();
+           // Log(command, "关闭");
+            device.Write(command);
+
+
+            if (!openByAnother)
+                device.Close();
+            return true;
+
         }
 
         public ILogger Logger { get; }
@@ -149,7 +147,7 @@ namespace HY.IO.Ports.Devices.DAM
         protected bool Verify(byte[] bytes)
         {
             if (bytes.Length <= 1)
-                return true;
+                return false;
             var checkSum = crc.ComputeHash(bytes, 0, bytes.Length - 2);
             return bytes[bytes.Length - 2] == checkSum[checkSum.Length - 1] && bytes[bytes.Length - 1] == checkSum[checkSum.Length - 2];
         }
@@ -161,42 +159,35 @@ namespace HY.IO.Ports.Devices.DAM
 
             const int port = -1; //查所有
             var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1);
-            lock (serialLockItem)
+
+
+            var openByAnother = false;
+            if (device.IsOpened)
             {
+                openByAnother = true;
 
-                var openByAnother = false;
-                if (device.IsOpened)
-                {
-                    openByAnother = true;
-
-                }
-                else
-                {
-                    device.Open();
-                }
-
-                //                atutResetEvet.Reset();
-                Log(command, "刷新状态");
-                device.Write(command);
-                var f = DateTime.Now;
-
-                Thread.Sleep(300);
-                var less = DateTime.Now - f;
-
-                var arg2 = device.Read();
-                if (!Verify(arg2)) return;
-                var data = arg2[3];
-                for (int i = 0; i < this.RelayPortsCount; i++)
-                {
-                    var bit = 1 << i;
-                    var result = (data & bit);
-                    this.RelayPort[i] = result != 0;
-                }
-                Log(command, "刷新状态-end");
-
-                if (!openByAnother)
-                    device.Close();
             }
+            else
+            {
+                device.Open();
+            }
+
+            //                atutResetEvet.Reset();
+            //Log(command, "刷新状态");
+            var arg2 = device.Write(command);
+            if (!Verify(arg2)) return;
+            var data = arg2[3];
+            for (int i = 0; i < this.RelayPortsCount; i++)
+            {
+                var bit = 1 << i;
+                var result = (data & bit);
+                this.RelayPort[i] = result != 0;
+            }
+            //Log(command, "刷新状态-end");
+
+            if (!openByAnother)
+                device.Close();
+
 
 
         }

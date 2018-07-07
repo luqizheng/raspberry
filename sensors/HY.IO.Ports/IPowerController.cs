@@ -13,6 +13,7 @@ namespace HY.IO.Ports
 
     public interface IPowerController
     {
+   
         /// <summary>
         /// 打开
         /// </summary>
