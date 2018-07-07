@@ -11,7 +11,7 @@ namespace HS.Sensors.Web.hub
     public class GarbageTerminalHub : Microsoft.AspNetCore.SignalR.Hub
     {
 
-        private readonly GarbageTerminal Terminal;
+        //private readonly GarbageTerminal Terminal;
 
         public GarbageTerminalHub(GarbageTerminal garbage, ILogger<GarbageTerminalHub> logger)
         {

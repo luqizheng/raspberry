@@ -57,9 +57,10 @@ namespace HY.IO.Ports
             get
             {
                 return Pump.PowerStatus == Power.On
-                    && PlasmaGenerator.PowerStatus == Power.On
-                    && ExhaustMain.PowerStatus == Power.On
-                    && ExhaustSlave.PowerStatus == Power.On;
+                    || PlasmaGenerator.PowerStatus == Power.On
+                    || ExhaustMain.PowerStatus == Power.On
+                    || ExhaustSlave.PowerStatus == Power.On;
+
             }
         }
         public bool TransferModelEnable
