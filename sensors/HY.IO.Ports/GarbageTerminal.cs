@@ -20,7 +20,7 @@ namespace HY.IO.Ports
         CancellationTokenSource terminalTurnOffTask = new CancellationTokenSource();
         Task turnOnTask;
         Task turnOffTask;
-
+        bool isRunning = false;
         Timer timer;
         private readonly IPowerController controller;
 
@@ -36,17 +36,21 @@ namespace HY.IO.Ports
             ExhaustSlave = exhaustSlave;
             Transfer = transfer;
             this.controller = controller;
-            timer = new Timer(getStatus, null, 1000, 1000);
+            timer = new Timer(GetStatus, null, 1000, 200);
 
             this.GrayFan.Terminal = this;
 
         }
 
 
-        private void getStatus(object state)
+        private void GetStatus(object state)
         {
+            if (isRunning)
+                return;
+            isRunning = true;
             controller.RefreshStatus();
             StatusRefreched?.Invoke(this, EventArgs.Empty);
+            isRunning = false;
         }
         public event EventHandler StatusRefreched;
         /// <summary>
@@ -137,10 +141,8 @@ namespace HY.IO.Ports
         public void StartTransfer(TransferParameter transfer)
         {
             if (!this.Enable)
-                if (turnOffTask != null && !turnOffTask.IsCompleted)
-                {
-                    throw new TerminalException("还没启动，请启动后再执行传输");
-                }
+
+                throw new TerminalException("还没启动，请启动后再执行传输");
             _transferTokenSource = new CancellationTokenSource(transfer.RunningSeconds * 1000);
             _transferEquipment = _transferTokenSource.Token;
 

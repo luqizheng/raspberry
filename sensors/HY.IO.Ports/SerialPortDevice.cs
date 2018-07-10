@@ -72,7 +72,7 @@ namespace HY.IO.Ports
             lock (this)
             {
                 device.Write(bytes, 0, bytes.Length);
-                Thread.Sleep(300);
+                Thread.Sleep(200);
                 var len = device.BytesToRead;
                 var r = new Byte[len];
                 device.Read(r, 0, len);

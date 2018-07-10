@@ -19,9 +19,10 @@ namespace HY.IO.Ports
 
             var poweOn = this.PowerStatus == Power.On;
 
-            if (this.Terminal.Enable == false && poweOn)
+            if (Terminal.Enable == false)
             {
-                this.TurnOff();
+                if (poweOn)
+                    this.TurnOff();
                 return;
             }
             if (poweOn)
@@ -55,8 +56,8 @@ namespace HY.IO.Ports
         }
         public override void TurnOff()
         {
-            grayFanTimeInfo.Sleep = DateTime.Now;
             base.TurnOff();
+            grayFanTimeInfo.Sleep = DateTime.Now;
         }
         public override void TurnOn()
         {
