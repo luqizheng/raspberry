@@ -8,5 +8,4 @@
         /// <param name="speed"></param>
         void Adjst(Speed speed);
     }
-
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Unosquare.RaspberryIO;
 using Unosquare.RaspberryIO.Gpio;
 
@@ -13,9 +10,9 @@ namespace HY.Sensors.Tempture
     {
         public SensorReadTimeoutException(string message) : base(message)
         {
-
         }
     }
+
     /// <summary>
     /// 参考 https://cdn-shop.adafruit.com/datasheets/DHT11-chinese.pdf
     /// </summary>
@@ -32,9 +29,7 @@ namespace HY.Sensors.Tempture
             //初始化感应器。
             //this.pin.PinMode = GpioPinDriveMode.Output;
             //this.pin.WriteAsync(GpioPinValue.High);
-
         }
-
 
         /// <summary>
         /// Reads the temperature.
@@ -43,8 +38,6 @@ namespace HY.Sensors.Tempture
         /// <returns>Task&lt;System.Single&gt;.</returns>
         public TempertureAndHumidity Read()
         {
-
-
             Console.WriteLine("初始化状态:" + pin.ReadValue());
             //只是初始化。构造函数那边做了，只是再次确保执行正确
             //pin.PinMode = GpioPinDriveMode.Output;
@@ -59,7 +52,6 @@ namespace HY.Sensors.Tempture
                 Humidity = 0,
                 Temperture = 0
             };
-
         }
 
         private void ReadData(out float template, out float hum)
@@ -95,7 +87,6 @@ namespace HY.Sensors.Tempture
                 {
                     _data[i / 8] |= 1;
                 }
-
             }
             //TIME CRITICAL_END #############
             // Check we read 40 bits and that the checksum matches.
@@ -159,7 +150,6 @@ namespace HY.Sensors.Tempture
                 if (highCycles > lowCycles)
                 {
                     data = data | 1;
-
                 }
                 else
                 {
@@ -167,7 +157,6 @@ namespace HY.Sensors.Tempture
                 }
 
                 //Console.WriteLine(_data[i / 8]);
-
             }
             byte temp = Convert.ToByte((data &
                     Convert.ToInt64("1111111100000000000000000000000000000000", 2)) >> 32);
@@ -178,7 +167,7 @@ namespace HY.Sensors.Tempture
             //{
             //    throw new Exception("测量数据有误 Line138");
             //}
-           var  temprature = Convert.ToString(temp);
+            var temprature = Convert.ToString(temp);
             var humidity = Convert.ToString(humid);
             var calibrate = Convert.ToString(calibr);
             Console.WriteLine(temprature + "," + humid);
@@ -224,7 +213,6 @@ namespace HY.Sensors.Tempture
 
             if (!pin.WaitForValue(value, milliseconds))
             {
-
                 if (!pin.WaitForValue(value, milliseconds))
                     throw new SensorReadTimeoutException("等待" + value + " 读取DHT11 温度和湿度超时");
             }
@@ -232,19 +220,15 @@ namespace HY.Sensors.Tempture
 
         private long GetPingLevelTimeTicket(GpioPinValue value)
         {
-
             var now = DateTime.Now.Ticks;
 
             while (pin.ReadValue() == value)
             {
-
                 continue;
                 // Console.WriteLine("in data"+pin.ReadValue());
             }
             return DateTime.Now.Ticks - now;
         }
-
-
     }
 
     public class TempertureAndHumidity

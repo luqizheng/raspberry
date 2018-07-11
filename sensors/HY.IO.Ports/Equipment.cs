@@ -13,13 +13,13 @@ namespace HY.IO.Ports
             this.controller = controller;
             this.setting = setting;
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="setting"></param>
         /// <returns></returns>
         protected abstract int PortIndex(DeviceSetting setting);
-
 
         public Power PowerStatus
         {
@@ -29,6 +29,7 @@ namespace HY.IO.Ports
                 return controller[index];
             }
         }
+
         public virtual void TurnOn()
         {
             var index = PortIndex(setting.CurrentValue);

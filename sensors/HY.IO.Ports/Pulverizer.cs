@@ -5,7 +5,7 @@ namespace HY.IO.Ports
 {
     public class Pulverizer : Equipment
     {
-        public Pulverizer(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) 
+        public Pulverizer(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
             : base(controller, setting)
         {
         }
@@ -15,5 +15,4 @@ namespace HY.IO.Ports
             return setting.PowerControllerSetting.Pulverizer;
         }
     }
-
 }

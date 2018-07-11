@@ -4,24 +4,14 @@ using System.Threading.Tasks;
 
 namespace HY.IO.Ports
 {
-    public class GrayFanTimeInfo
-    {
-        public DateTime? Sleep { get; set; }
-        public DateTime? RunTime { get; set; }
-    }
-    public class TransferParameter
-    {
-        public int RunningSeconds { get; set; }
-    }
     public class GarbageTerminal : IDisposable
     {
-
-        CancellationTokenSource terminalTurnOnTask = new CancellationTokenSource();
-        CancellationTokenSource terminalTurnOffTask = new CancellationTokenSource();
-        Task turnOnTask;
-        Task turnOffTask;
-        bool isRunning = false;
-        Timer timer;
+        private CancellationTokenSource terminalTurnOnTask = new CancellationTokenSource();
+        private CancellationTokenSource terminalTurnOffTask = new CancellationTokenSource();
+        private Task turnOnTask;
+        private Task turnOffTask;
+        private bool isRunning = false;
+        private Timer timer;
         private readonly IPowerController controller;
 
         public GarbageTerminal(Pulverizer pulverizer,
@@ -39,9 +29,7 @@ namespace HY.IO.Ports
             timer = new Timer(GetStatus, null, 1000, 200);
 
             this.GrayFan.Terminal = this;
-
         }
-
 
         private void GetStatus(object state)
         {
@@ -52,7 +40,9 @@ namespace HY.IO.Ports
             StatusRefreched?.Invoke(this, EventArgs.Empty);
             isRunning = false;
         }
+
         public event EventHandler StatusRefreched;
+
         /// <summary>
         /// 机械是否启动
         /// </summary>
@@ -64,9 +54,9 @@ namespace HY.IO.Ports
                     || PlasmaGenerator.PowerStatus == Power.On
                     || ExhaustMain.PowerStatus == Power.On
                     || ExhaustSlave.PowerStatus == Power.On;
-
             }
         }
+
         public bool TransferModelEnable
         {
             get
@@ -74,8 +64,9 @@ namespace HY.IO.Ports
                 return Pulverizer.PowerStatus == Power.On || Transfer.PowerStatus == Power.On;
             }
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public void TurnOn()
         {
@@ -103,9 +94,7 @@ namespace HY.IO.Ports
 
                      this.GrayFan.TurnOn();
                  }, token);
-
         }
-
 
         public void TurnOff()
         {
@@ -131,13 +120,13 @@ namespace HY.IO.Ports
                   PlasmaGenerator.TurnOff();
 
                   this.GrayFan.TurnOff();
-
               }, token);
-
         }
+
         private CancellationTokenSource _transferTokenSource = new CancellationTokenSource();
         private CancellationToken _transferEquipment;
         private Task TransferEquipmentRunningTask = null;
+
         public void StartTransfer(TransferParameter transfer)
         {
             if (!this.Enable)
@@ -146,11 +135,8 @@ namespace HY.IO.Ports
             _transferTokenSource = new CancellationTokenSource(transfer.RunningSeconds * 1000);
             _transferEquipment = _transferTokenSource.Token;
 
-
-
             TransferEquipmentRunningTask = Task.Run(() =>
              {
-
                  Pulverizer.TurnOn();
                  Thread.Sleep(5 * 1000);
                  Transfer.TurnOn();
@@ -165,9 +151,7 @@ namespace HY.IO.Ports
                  Pulverizer.TurnOff();
 
                  this.Transfer.TurnOff();
-
              }, _transferEquipment);
-
         }
 
         public void StopTransfer()
@@ -185,14 +169,17 @@ namespace HY.IO.Ports
         }
 
         public Transfer Transfer { get; set; }
+
         /// <summary>
         /// 粉碎器，闸刀
         /// </summary>
         public Pulverizer Pulverizer { get; set; }
+
         /// <summary>
         /// 吹灰
         /// </summary>
         public GrayFan GrayFan { get; set; }
+
         /// <summary>
         /// 水泵
         /// </summary>
@@ -202,17 +189,15 @@ namespace HY.IO.Ports
         /// 主风机
         /// </summary>
         public ExhaustMain ExhaustMain { get; set; }
+
         /// <summary>
         /// 次风机
         /// </summary>
         public ExhaustSlave ExhaustSlave { get; set; }
+
         /// <summary>
         /// 等离子发生器
         /// </summary>
         public PlasmaGenerator PlasmaGenerator { get; set; }
-
     }
-
-
-
 }

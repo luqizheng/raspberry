@@ -1,6 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.Extensions.Logging;
 
-using Microsoft.Extensions.Logging;
 namespace HY.IO.Ports.Devices.DAM
 {
     public class DAM0404 : DAM
@@ -11,6 +10,6 @@ namespace HY.IO.Ports.Devices.DAM
 
         protected override int RelayPortsCount => 4;
 
-        protected override int OptocouplerPorts => 4;
+        protected override int OptocouplerPortsCount => 4;
     }
 }

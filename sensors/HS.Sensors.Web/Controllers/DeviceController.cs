@@ -3,27 +3,36 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HS.Sensors.Web.Controllers
 {
-    public class EqipmentParameter
-    {
-        public Power Power { get; set; }
-
-
-    }
     public class DeviceController : Controller
     {
         private readonly GarbageTerminal terminal;
         private readonly IPowerController powerController;
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="processor"></param>
+        /// <param name="powerController"></param>
         public DeviceController(GarbageTerminal processor, IPowerController powerController)
         {
             this.terminal = processor;
             this.powerController = powerController;
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         public IActionResult Device(bool enable)
         {
             return View();
         }
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
         public IActionResult PowerControllerStatus()
         {
             powerController.RefreshStatus();
@@ -39,6 +48,12 @@ namespace HS.Sensors.Web.Controllers
             };
             return Ok(status);
         }
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="enable"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult Pulverizer(EqipmentParameter enable)
         {
@@ -49,6 +64,7 @@ namespace HS.Sensors.Web.Controllers
 
             return this.Ok(true);
         }
+
         [HttpPost]
         public IActionResult GrayFan(EqipmentParameter enable)
         {
@@ -59,6 +75,7 @@ namespace HS.Sensors.Web.Controllers
 
             return this.Ok(true);
         }
+
         [HttpPost]
         public IActionResult Pump(EqipmentParameter enable)
         {
@@ -79,6 +96,7 @@ namespace HS.Sensors.Web.Controllers
 
             return this.Ok(true);
         }
+
         [HttpPost]
         public IActionResult ExhaustSlave(EqipmentParameter enable)
         {
@@ -89,6 +107,7 @@ namespace HS.Sensors.Web.Controllers
 
             return this.Ok(true);
         }
+
         [HttpPost]
         public IActionResult PlasmaGenerator(EqipmentParameter enable)
         {
@@ -168,6 +187,4 @@ namespace HS.Sensors.Web.Controllers
             }
         }
     }
-
- 
 }

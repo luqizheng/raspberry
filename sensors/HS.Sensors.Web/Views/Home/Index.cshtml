@@ -12,11 +12,8 @@
             </div>
 
             <div class="panel-body">
-
-                <button class="btn btn-info" id="once_transfer" style="width:100%;margin-bottom:10px;height:154px;">启动送料</button>
-
-                <button class="btn btn-success" id="auto_transfer" style="width:100%;height:154px">持续送料</button>
-
+                <button class="btn btn-info" id="once_transfer" style="width:100%;margin-bottom:10px;height:154px;" disabled>启动送料</button>
+                <button class="btn btn-success" id="auto_transfer" style="width:100%;height:154px" disabled>持续送料</button>
             </div>
         </div>
     </div>
@@ -36,103 +33,116 @@
 
 
 @section Scripts{
-<script type="text/javascript">
-    $(document).ready(function () {
-        var $btnTurnOn = $("#turn-on");
-        //总体启动
-        $("#turn-on").click(function () {
-            var t = $(this);
-            var text = $.trim($(this).text());
-            var enable = t.hasClass("on");
-            GarbageTerminal.turn(enable, function (data) {
-                if (data) {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $btnTurnOn = $("#turn-on");
+            var $once_transfer = $("#once_transfer")
 
-                    SetDeviceEnable(!enable);
-                }
+            var $auto_transfer = $("#auto_transfer")
+            //总体启动
+            $("#turn-on").click(function () {
+                var t = $(this);
+                var text = $.trim($(this).text());
+                var enable = t.hasClass("on");
+                GarbageTerminal.turn(!enable, function (data) {
+                    if (data) {
+                        SetDeviceEnable(!enable, true);
+                    }
+
+                })
+            })
+            $once_transfer.click(function () {
+                var isON = $(this).hasClass("on");
+                if (!isON)
+                    GarbageTerminal.startTransfer(false, function () {
+                        setTransferModelEnable(!isON, true)
+
+                    })
+                else
+                    GarbageTerminal.stopTransfer(function () {
+                        setTransferModelEnable(!isON, true)
+                    });
+
+
 
             })
-        })
-        var $once_transfer = $("#once_transfer").click(function () {
-            var isON = $(this).hasClass("on");
-            if (!isON)
-                GarbageTerminal.startTransfer(false, function () {
-                    setTransferModelEnable(!isON, true)
+            //送料
+            $auto_transfer.click(function () {
+                var isON = $(this).hasClass("on");
+                if (!isON)
+                    GarbageTerminal.startTransfer(true, function () {
+                        setTransferModelEnable(!isON, true);
+                    })
+                else
+                    GarbageTerminal.stopTransfer(function () {
 
-                })
-            else
-                GarbageTerminal.stopTransfer(function () {
-
-                    setTransferModelEnable(!isON, true)
-                });
-
+                        setTransferModelEnable(!isON, true);
+                    });
 
 
-        })
-        //送料
-        var $auto_transfer = $("#auto_transfer").click(function () {
+            })
+            /*
+             这里是对 _equipment视图 进行设置
+             */
+            subcriptStatus(function (status) {
+                //设备电源是否启动
+                var enable = status.enable;
+                SetDeviceEnable(enable, false);
+
+                //送料设备是否启动
+                setTransferModelEnable(status.transferModelEnable);
+
+                for (var key in status.power) {
+                    var isOn = status.power[key] == 1;
+                    var tar = $("#power_" + key);
+                    tar.toggleClass("list-group-item-success", isOn);
+                    tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
+
+                }
+            })
+
+            function SetDeviceEnable(enable, inProcessing) {
+                var currentState = $btnTurnOn.hasClass("on");
 
 
-            var isON = $(this).hasClass("on");
-            if (!isON)
-                GarbageTerminal.startTransfer(true, function () {
-                    setTransferModelEnable(!isON, true);
-                })
-            else
-                GarbageTerminal.stopTransfer(function () {
+                if (inProcessing) {
+                    $auto_transfer.prop("disabled", false)
+                    $once_transfer.prop("disabled", false);
+                    $btnTurnOn.addClass("btn-warning").find(".text").text(!enable ? "关闭中" : "开启中");
+                    return;
+                }
 
-                    setTransferModelEnable(!isON, true);
-                });
+                if (currentState != enable) {
+                    $btnTurnOn.find(".text").text(enable ? "停止" : "启动");
+                    $btnTurnOn.toggleClass("btn-danger", !enable);
+                    $btnTurnOn.toggleClass("btn-success", enable)
+                    $btnTurnOn.toggleClass("on", enable);
+                    $btnTurnOn.find("i:first").toggleClass("fa-spin", enable);
 
-
-        })
-        /*
-         这里是对 _equipment视图 进行设置
-         */
-        subcriptStatus(function (status) {
-            //设备电源是否启动
-            var enable = status.enable;
-            SetDeviceEnable(enable);
-
-            //送料设备是否启动
-            setTransferModelEnable(status.transferModelEnable);
-
-            for (var key in status.power) {
-                var isOn = status.power[key] == 1;
-                var tar = $("#power_" + key);
-                tar.toggleClass("list-group-item-success", isOn);
-                tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
-
-            }
-        })
-
-        function SetDeviceEnable(enable) {
-            $btnTurnOn.find(".text").text(enable ? "停止" : "启动");
-            $btnTurnOn.toggleClass("btn-danger", !enable);
-            $btnTurnOn.toggleClass("btn-success", enable)
-            $btnTurnOn.toggleClass("on", !enable);
-            $btnTurnOn.find("i:first").toggleClass("fa-spin", enable);
-
-        }
-
-        function setTransferModelEnable(enable, inProcessing) {
-            var currentState = $auto_transfer.hasClass("on");
-
-            if (inProcessing) {
-                $auto_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
-                $once_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
-                return;
-            }
-            console.log(enable, currentState)
-            if (currentState != enable) {
-                $auto_transfer.text(!enable ? "持续送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
-                $once_transfer.text(!enable ? "一次送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
-
-                //$auto_transfer.toggleClass("btn-danger", enable).removeClass("btn-warning");
+                    $auto_transfer.prop("disabled", !enable)
+                    $once_transfer.prop("disabled", !enable);
+                }
             }
 
+            function setTransferModelEnable(enable, inProcessing) {
+                var currentState = $auto_transfer.hasClass("on");
 
-        }
-    });
-</script>
+                if (inProcessing) {
+                    $auto_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
+                    $once_transfer.text(!enable ? "关闭中" : "开启中").addClass("btn-warning");
+                    return;
+                }
+                console.log(enable, currentState)
+                if (currentState != enable) {
+                    $auto_transfer.text(!enable ? "持续送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
+                    $once_transfer.text(!enable ? "一次送料" : "停止").toggleClass("on", enable).removeClass("btn-warning");
+
+                    //$auto_transfer.toggleClass("btn-danger", enable).removeClass("btn-warning");
+                }
+
+
+            }
+        });
+    </script>
 
 }

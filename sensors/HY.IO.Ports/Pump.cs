@@ -14,6 +14,4 @@ namespace HY.IO.Ports
             return setting.PowerControllerSetting.Pump;
         }
     }
-
-   
 }

@@ -1,19 +1,15 @@
 ﻿using HY.IO.Ports.Devices;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HY.IO.Ports.Extentions
 {
     public static class DeviceExtentions
     {
-
         public static IServiceCollection AddControllerWatch<T>(this IServiceCollection service)
             where T : class, IPowerController
         {
             service.AddSingleton<ITransmissionController, TransmissionController>();//jsut debug
-            service.AddSingleton<IPowerController,T>();
+            service.AddSingleton<IPowerController, T>();
             service.AddTransient<GrayFan>();
             service.AddTransient<Pulverizer>();
             service.AddTransient<Pump>();
@@ -24,7 +20,6 @@ namespace HY.IO.Ports.Extentions
             service.AddSingleton<GarbageTerminal>();
 
             return service;
-
         }
     }
 }

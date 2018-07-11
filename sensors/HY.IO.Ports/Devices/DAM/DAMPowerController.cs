@@ -1,23 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 namespace HY.IO.Ports.Devices.DAM
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class DAMPowerController : IPowerController
     {
-
         public DAMPowerController(DAM damDevice)
         {
             DamController = damDevice ?? throw new ArgumentNullException(nameof(damDevice));
         }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         public DAM DamController { get; }
-
 
         public Power this[int portIndex]
         {
@@ -30,7 +28,7 @@ namespace HY.IO.Ports.Devices.DAM
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="portIndex"></param>
         /// <param name="setToStatus"></param>
@@ -42,6 +40,7 @@ namespace HY.IO.Ports.Devices.DAM
             else
                 return DamController.Close(portIndex);
         }
+
         /// <summary>
         /// 刷新 控制器所有端口的状态
         /// </summary>
@@ -49,8 +48,6 @@ namespace HY.IO.Ports.Devices.DAM
         public void RefreshStatus()
         {
             DamController.RefreshRelayStatus();
-
-
         }
     }
 }

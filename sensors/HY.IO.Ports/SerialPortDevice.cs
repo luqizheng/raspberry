@@ -1,9 +1,7 @@
-﻿using HY.IO.Ports.Helper;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using RJCP.IO.Ports;
 using System;
 using System.Collections.Generic;
-using System.IO.Ports;
 using System.Threading;
 
 namespace HY.IO.Ports
@@ -19,20 +17,24 @@ namespace HY.IO.Ports
         B57600 = 57600,
         B1152000 = 115200
     }
-    public class CommandQueueItem
-    {
-        public byte[] Write { get; set; }
-        public byte[] Read { get; set; }
 
-        public Action<string> Command { get; set; }
-    }
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="data"></param>
+    /// <returns></returns>
     public delegate byte[] SyncToWrite(byte[] data);
+
+    /// <summary>
+    ///
+    /// </summary>
     public class SerialPortDevice
     {
         public static string GetPortNames()
         {
             return null;
         }
+
         private readonly string comPath;
         private readonly BitRate rate;
 
@@ -43,9 +45,10 @@ namespace HY.IO.Ports
                 return device.IsOpen;
             }
         }
+
         public Action<object, byte[]> DataReceived { get; internal set; }
         public ILogger Logger { get; }
-        SerialPortStream device;
+        private SerialPortStream device;
 
         public SerialPortDevice(ILogger logger, string comPath, BitRate rate)
         {
@@ -54,8 +57,6 @@ namespace HY.IO.Ports
             this.rate = rate;
             device = new SerialPortStream(comPath, Convert.ToInt32(rate));
         }
-
-
 
         public void Open()
         {
@@ -66,7 +67,9 @@ namespace HY.IO.Ports
         {
             device.Close();
         }
+
         private Queue<byte[]> commands = new Queue<byte[]>();
+
         public byte[] Write(byte[] bytes)
         {
             lock (this)
@@ -76,10 +79,8 @@ namespace HY.IO.Ports
                 var len = device.BytesToRead;
                 var r = new Byte[len];
                 device.Read(r, 0, len);
-                //Logger.LogDebug("Reading {0}", BitHelper.BitToString(r));
                 return r;
             }
         }
-     
     }
 }

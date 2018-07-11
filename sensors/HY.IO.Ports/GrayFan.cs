@@ -7,8 +7,9 @@ namespace HY.IO.Ports
 {
     public class GrayFan : Equipment
     {
-        GrayFanTimeInfo grayFanTimeInfo = new GrayFanTimeInfo();
+        private GrayFanTimeInfo grayFanTimeInfo = new GrayFanTimeInfo();
         private Timer timer;
+
         public GrayFan(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
             timer = new Timer(GrayFanTimer, null, 5000, 5000);
@@ -16,7 +17,6 @@ namespace HY.IO.Ports
 
         private void GrayFanTimer(object state)
         {
-
             var poweOn = this.PowerStatus == Power.On;
 
             if (Terminal.Enable == false)
@@ -54,11 +54,13 @@ namespace HY.IO.Ports
         {
             return setting.PowerControllerSetting.GrayFan;
         }
+
         public override void TurnOff()
         {
             base.TurnOff();
             grayFanTimeInfo.Sleep = DateTime.Now;
         }
+
         public override void TurnOn()
         {
             base.TurnOn();

@@ -11,8 +11,9 @@ namespace HY.IO.Ports
         }
 
         public IPowerController Controller { get; }
+
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="setting"></param>
         /// <returns></returns>

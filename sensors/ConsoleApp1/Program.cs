@@ -1,13 +1,10 @@
-﻿
-using System;
-using HY.IO.Ports;
-using CRC;
-using HY.IO.Ports.Devices.DAM;
+﻿using HY.IO.Ports;
+
 namespace ConsoleApp1
 {
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var ports = SerialPortDevice.GetPortNames();
             SerialPortDevice port = new SerialPortDevice(null, "COM3", BitRate.B9600);
@@ -35,10 +32,6 @@ namespace ConsoleApp1
             port.Write(data);
 
             port.Close();
-
-
-
-
         }
     }
 }
