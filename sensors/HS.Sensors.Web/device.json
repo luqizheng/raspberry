@@ -11,8 +11,8 @@
       "PlasmaGenerator": 1
     },
     "OpenClosePortSetting": {
-      "HighLevelSensor": 1,
-      "LowLevelSensor": 2
+      "FullSensor": 1,
+      "EmptySensor": 2
     },
     "GrayFanRuntime": {
       "GrayFanSleepSeconds": 30,

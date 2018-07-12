@@ -43,7 +43,7 @@ namespace HS.Sensors.Web
                 var logger = sp.GetRequiredService<ILogger<DAM0808>>();
                 return new DAM0808(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
             });
-            services.AddControllerWatch<DAMPowerController>();
+            services.AddControllerWatch<DAMPowerController, DAMPowerController>();
             services.AddSignalR(options =>
             {
                 options.EnableDetailedErrors = true;

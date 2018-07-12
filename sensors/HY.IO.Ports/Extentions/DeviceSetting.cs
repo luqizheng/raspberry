@@ -46,12 +46,12 @@
         /// <summary>
         /// 高位红外探头
         /// </summary>
-        public int HighLevelSensor { get; set; }
+        public int FullSensor { get; set; }
 
         /// <summary>
         /// 低位红外探头
         /// </summary>
-        public int LowLevelSensor { get; set; }
+        public int EmptySensor { get; set; }
     }
 
     public class PowerControllerSetting

@@ -36,6 +36,32 @@ namespace HS.Sensors.Web.Controllers
             return View();
         }
 
+        private void Save()
+        {
+            using (var write = new StreamWriter("device.json"))
+            {
+                var writer = TextWriter.Synchronized(write);
+                writer.Write(JsonConvert.SerializeObject(new { DeviceSetting = setting.CurrentValue }, Formatting.Indented));
+            }
+        }
+
+        [HttpPost]
+        public IActionResult OpenCloseSetting(DeviceSensorSetting parameter)
+        {
+            switch (parameter.SensorName)
+            {
+                case "FullSensor":
+                    setting.CurrentValue.OpenClosePortSetting.FullSensor = parameter.SensorIndex;
+                    break;
+
+                case "EmptySensor":
+                    setting.CurrentValue.OpenClosePortSetting.EmptySensor = parameter.SensorIndex;
+                    break;
+            }
+            Save();
+            return Ok(true);
+        }
+
         [HttpPost]
         public IActionResult PowerSetting(DevicePowerPameter parameter)
         {
@@ -70,12 +96,7 @@ namespace HS.Sensors.Web.Controllers
                     setting.CurrentValue.PowerControllerSetting.Transfer = parameter.PowerIndex;
                     break;
             }
-
-            using (var write = new StreamWriter("device.json"))
-            {
-                var writer = TextWriter.Synchronized(write);
-                writer.Write(JsonConvert.SerializeObject(new { DeviceSetting = setting.CurrentValue }, Formatting.Indented));
-            }
+            Save();
             return Ok("true");
         }
 

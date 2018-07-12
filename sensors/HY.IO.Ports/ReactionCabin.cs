@@ -1,13 +1,14 @@
 ﻿using HY.IO.Ports.Extentions;
+using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
     public class ReactionCabin
     {
-        private readonly DeviceSetting setting;
+        private readonly IOptionsMonitor<DeviceSetting> setting;
         private readonly IOpenCloseController controller;
 
-        public ReactionCabin(DeviceSetting setting, IOpenCloseController controller)
+        public ReactionCabin(IOptionsMonitor<DeviceSetting> setting, IOpenCloseController controller)
         {
             this.setting = setting;
             this.controller = controller;
@@ -20,7 +21,7 @@ namespace HY.IO.Ports
         {
             get
             {
-                return controller.IsOpen(setting.OpenClosePortSetting.HighLevelSensor);
+                return controller.IsOpen(setting.CurrentValue.OpenClosePortSetting.FullSensor);
             }
         }
 
@@ -31,7 +32,7 @@ namespace HY.IO.Ports
         {
             get
             {
-                return controller.IsOpen(setting.OpenClosePortSetting.LowLevelSensor);
+                return controller.IsOpen(setting.CurrentValue.OpenClosePortSetting.EmptySensor);
             }
         }
 

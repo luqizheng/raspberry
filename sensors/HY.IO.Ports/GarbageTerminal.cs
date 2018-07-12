@@ -16,7 +16,9 @@ namespace HY.IO.Ports
 
         public GarbageTerminal(Pulverizer pulverizer,
             GrayFan grayFan, Pump pump, PlasmaGenerator plasmaGenerator,
-             ExhaustMain exhaustMain, ExhaustSlave exhaustSlave, Transfer transfer, IPowerController controller)
+             ExhaustMain exhaustMain, ExhaustSlave exhaustSlave, Transfer transfer,
+             ReactionCabin reactionCabin,
+             IPowerController controller)
         {
             Pulverizer = pulverizer;
             GrayFan = grayFan;
@@ -25,6 +27,7 @@ namespace HY.IO.Ports
             ExhaustMain = exhaustMain;
             ExhaustSlave = exhaustSlave;
             Transfer = transfer;
+            ReactionCabin = reactionCabin;
             this.controller = controller;
             timer = new Timer(GetStatus, null, 1000, 200);
 
@@ -170,6 +173,7 @@ namespace HY.IO.Ports
         }
 
         public Transfer Transfer { get; set; }
+        public ReactionCabin ReactionCabin { get; }
 
         /// <summary>
         /// 粉碎器，闸刀
