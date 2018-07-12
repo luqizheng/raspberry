@@ -9,6 +9,9 @@ namespace HY.IO.Ports
         On,
     }
 
+    /// <summary>
+    ///
+    /// </summary>
     public interface IPowerController
     {
         /// <summary>

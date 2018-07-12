@@ -17,7 +17,7 @@ namespace HY.IO.Ports
         /// <summary>
         /// 高位
         /// </summary>
-        public bool HighLevel
+        public bool IsFull
         {
             get
             {
@@ -28,11 +28,11 @@ namespace HY.IO.Ports
         /// <summary>
         /// 低位
         /// </summary>
-        public bool LowerLevel
+        public bool IsEmpty
         {
             get
             {
-                return controller.IsOpen(setting.CurrentValue.OpenClosePortSetting.EmptySensor);
+                return !controller.IsOpen(setting.CurrentValue.OpenClosePortSetting.EmptySensor);
             }
         }
 

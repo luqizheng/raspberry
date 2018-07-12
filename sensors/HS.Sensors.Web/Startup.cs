@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using HS.Sensors.Web.hub;
+﻿using HS.Sensors.Web.hub;
 using HY.IO.Ports;
 using HY.IO.Ports.Devices.DAM;
 using HY.IO.Ports.Extentions;
@@ -14,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace HS.Sensors.Web
 {
@@ -90,6 +86,11 @@ namespace HS.Sensors.Web
             {
                 Enable = Terminal.Enable,
                 TransferModelEnable = Terminal.TransferModelEnable,
+                OpenClose = new
+                {
+                    Terminal.ReactionCabin.IsFull,
+                    Terminal.ReactionCabin.IsEmpty,
+                },
                 Power = new
                 {
                     ExhaustMain = Terminal.ExhaustMain.PowerStatus,

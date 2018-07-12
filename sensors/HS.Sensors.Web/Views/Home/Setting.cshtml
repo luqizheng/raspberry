@@ -93,93 +93,93 @@
         </div>
     </div>
 
-    <div class="panel">
-        <div class="panel-heading">
-            光耦开关设置
-        </div>
-        <div class="panel-body">
-            <form id="buttonPanel" class="form-horizontal">
-                <div class="form-group" id="FullSensor">
-                    <label for="PlasmaGenerator_powerIndex" class="col-sm-2">反应舱满载</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="FullSensor_index" placeholder="光耦触点位置" value="@setting.CurrentValue.OpenClosePortSetting.FullSensor">
-                    </div>
-
-                    <div class="col-sm-2">
-                        <button id="FullSensor_Status" class="btn btn-default equip"><span>状态</span><i class="fa fa-cog"></i></button>
-                    </div>
+    @*<div class="panel">
+                <div class="panel-heading">
+                    光耦开关设置
                 </div>
-                <div class="form-group" id="EmptySensor">
-                    <label for="EmptySensor_index" class="col-sm-2">反应舱空载</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="EmptySensor_index" placeholder="光耦触点位置" value="@setting.CurrentValue.OpenClosePortSetting.EmptySensor">
-                    </div>
+                <div class="panel-body">
+                    <form id="buttonPanel" class="form-horizontal">
+                        <div class="form-group" id="FullSensor">
+                            <label for="PlasmaGenerator_powerIndex" class="col-sm-2">反应舱满载</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="FullSensor_index" placeholder="光耦触点位置" value="@setting.CurrentValue.OpenClosePortSetting.FullSensor">
+                            </div>
 
-                    <div class="col-sm-2">
-                        <button id="EmptySensor_Status" class="btn btn-default equip"><span>状态</span><i class="fa fa-cog"></i></button>
-                    </div>
+                            <div class="col-sm-2">
+                                <button id="FullSensor_Status" class="btn btn-default equip"><span>状态</span><i class="fa fa-cog"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group" id="EmptySensor">
+                            <label for="EmptySensor_index" class="col-sm-2">反应舱空载</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="EmptySensor_index" placeholder="光耦触点位置" value="@setting.CurrentValue.OpenClosePortSetting.EmptySensor">
+                            </div>
+
+                            <div class="col-sm-2">
+                                <button id="EmptySensor_Status" class="btn btn-default equip"><span>状态</span><i class="fa fa-cog"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
+        </div>*@
 
-@section Scripts{
-    <script type="text/javascript">
-        subcriptStatus(function (status) {
+    @section Scripts{
+        <script type="text/javascript">
+            subcriptStatus(function (status) {
 
-            for (var key in status.power) {
-                var isOn = status.power[key] == 1;
-                var tar = $("#" + key + "_Power");
-                tar.toggleClass("btn-success", isOn);
-                tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
-                tar.find('span').text(isOn ? "停止" : "开始");
-            }
-        })
-
-        $(document).ready(function () {
-            $("#PlasmaGenerator_powerIndex,#Transfer_powerIndex,#Pulverizer_powerIndex,#GrayFan_powerIndex,#ExhaustMain_powerIndex,#ExhaustSlave_powerIndex,#Pump_powerIndex").change(function () {
-                var device = $(this).attr("id").split("_")[0];
-                $.post("/home/PowerSetting", {
-                    equipmentName: device,
-                    PowerIndex: $(this).val()
-                }, function (data) {
-                    bootbox.alert("设置完成");
-                })
+                for (var key in status.power) {
+                    var isOn = status.power[key] == 1;
+                    var tar = $("#" + key + "_Power");
+                    tar.toggleClass("btn-success", isOn);
+                    tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
+                    tar.find('span').text(isOn ? "停止" : "开始");
+                }
             })
 
-            $("#GrayFan_RunningTime ,#GrayFan_SleepTime").change(function () {
-                $.post("/home/GrayFanRunTime", {
-                    GrayFanSleepSeconds: $("#GrayFan_SleepTime").val(),
-                    GrayFanRunSeconds: $("#GrayFan_RunningTime").val()
-                }, function (data) {
-                    bootbox.alert("设置完成");
-                })
-            })
-
-            $("#buttonPanel .equip").click(function (e) {
-                e.preventDefault();
-                var $this = $(this);
-                var eqName = $(this).attr("id").split("_")[0];
-                var enable = $this.find("i").hasClass("fa-spin");
-                GarbageTerminal[eqName].call(this, !enable, function (data) {
-
-                    console.log(data);
+            $(document).ready(function () {
+                $("#PlasmaGenerator_powerIndex,#Transfer_powerIndex,#Pulverizer_powerIndex,#GrayFan_powerIndex,#ExhaustMain_powerIndex,#ExhaustSlave_powerIndex,#Pump_powerIndex").change(function () {
+                    var device = $(this).attr("id").split("_")[0];
+                    $.post("/home/PowerSetting", {
+                        equipmentName: device,
+                        PowerIndex: $(this).val()
+                    }, function (data) {
+                        bootbox.alert("设置完成");
+                    })
                 })
 
-            })
-
-            $("#FullSensor_index,#EmptySensor_index").change(function () {
-                var $this = $(this);
-                var eqName = $(this).attr("id").split("_")[0];
-                $.post("/home/OpenCloseSetting", {
-                    SensorIndex: $(this).val(),
-                    SensorName: eqName
-                }, function (data) {
-                    bootbox.alert("设置完成");
+                $("#GrayFan_RunningTime ,#GrayFan_SleepTime").change(function () {
+                    $.post("/home/GrayFanRunTime", {
+                        GrayFanSleepSeconds: $("#GrayFan_SleepTime").val(),
+                        GrayFanRunSeconds: $("#GrayFan_RunningTime").val()
+                    }, function (data) {
+                        bootbox.alert("设置完成");
+                    })
                 })
-            })
 
-        });
-    </script>
-}
+                $("#buttonPanel .equip").click(function (e) {
+                    e.preventDefault();
+                    var $this = $(this);
+                    var eqName = $(this).attr("id").split("_")[0];
+                    var enable = $this.find("i").hasClass("fa-spin");
+                    GarbageTerminal[eqName].call(this, !enable, function (data) {
+
+                        console.log(data);
+                    })
+
+                })
+
+                $("#FullSensor_index,#EmptySensor_index").change(function () {
+                    var $this = $(this);
+                    var eqName = $(this).attr("id").split("_")[0];
+                    $.post("/home/OpenCloseSetting", {
+                        SensorIndex: $(this).val(),
+                        SensorName: eqName
+                    }, function (data) {
+                        bootbox.alert("设置完成");
+                    })
+                })
+
+            });
+        </script>
+    }

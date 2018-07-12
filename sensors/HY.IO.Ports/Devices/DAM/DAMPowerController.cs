@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace HY.IO.Ports.Devices.DAM
 {
@@ -11,14 +12,28 @@ namespace HY.IO.Ports.Devices.DAM
         {
             DamController = damDevice ?? throw new ArgumentNullException(nameof(damDevice));
             DamController.OptocouplerPortsChanged += DamController_OptocouplerPortsChanged;
+            timer = new Timer(GetStatus, null, 1000, 200);
         }
 
         public event EventHandler<OpenCloseEventArgs> OnOptocouplerChange;
+
+        private bool isRunning = false;
+
+        private void GetStatus(object state)
+        {
+            if (isRunning)
+                return;
+            isRunning = true;
+            RefreshStatus();
+            isRunning = false;
+        }
 
         /// <summary>
         ///
         /// </summary>
         public DAM DamController { get; }
+
+        private Timer timer;
 
         public Power GetPowerStatus(int portIndex)
         {

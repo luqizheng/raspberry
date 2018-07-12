@@ -10,8 +10,7 @@ namespace HY.IO.Ports
         private CancellationTokenSource terminalTurnOffTask = new CancellationTokenSource();
         private Task turnOnTask;
         private Task turnOffTask;
-        private bool isRunning = false;
-        private Timer timer;
+
         private readonly IPowerController controller;
 
         public GarbageTerminal(Pulverizer pulverizer,
@@ -29,23 +28,9 @@ namespace HY.IO.Ports
             Transfer = transfer;
             ReactionCabin = reactionCabin;
             this.controller = controller;
-            timer = new Timer(GetStatus, null, 1000, 200);
 
             this.GrayFan.Terminal = this;
         }
-
-        private void GetStatus(object state)
-        {
-            if (isRunning)
-                return;
-            isRunning = true;
-            controller.RefreshStatus();
-
-            StatusRefreched?.Invoke(this, EventArgs.Empty);
-            isRunning = false;
-        }
-
-        public event EventHandler StatusRefreched;
 
         /// <summary>
         /// 机械是否启动

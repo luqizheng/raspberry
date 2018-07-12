@@ -135,6 +135,8 @@ namespace HY.IO.Ports.Devices.DAM
 
         public void RefreshOptocouplerStatus()
         {
+            //TODO
+            return;
             const int port = -1; //查所有,暂时查询所有，因为返回结果速度差不多，没必要单个查
             var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1, QueryType.Optocoupler);
 
@@ -154,6 +156,7 @@ namespace HY.IO.Ports.Devices.DAM
             var arg2 = device.Write(command);
             if (!Verify(arg2)) return;
             var data = arg2[3];
+            //Log(new byte[] { arg2[3] }, "wtf-------------------------------");
             for (int i = 0; i < this.OptocouplerPortsCount; i++)
             {
                 var bit = 1 << i;
