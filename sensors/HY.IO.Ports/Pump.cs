@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class Pump : Equipment
+    public class Pump : PowerEquipment
     {
         public Pump(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {

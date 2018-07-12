@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class PlasmaGenerator : Equipment
+    public class PlasmaGenerator : PowerEquipment
     {
         public PlasmaGenerator(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {

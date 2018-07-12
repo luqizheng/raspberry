@@ -5,26 +5,41 @@ namespace HY.IO.Ports.Devices.DAM
     /// <summary>
     ///
     /// </summary>
-    public class DAMPowerController : IPowerController
+    public class DAMPowerController : IPowerController, IOpenCloseController
     {
         public DAMPowerController(DAM damDevice)
         {
             DamController = damDevice ?? throw new ArgumentNullException(nameof(damDevice));
+            DamController.OptocouplerPortsChanged += DamController_OptocouplerPortsChanged;
         }
+
+        public event EventHandler<OpenCloseEventArgs> OnOptocouplerChange;
 
         /// <summary>
         ///
         /// </summary>
         public DAM DamController { get; }
 
-        public Power this[int portIndex]
+        public Power GetPowerStatus(int portIndex)
         {
-            get
-            {
-                if (DamController.RelayPort.ContainsKey(portIndex))
-                    return this.DamController.RelayPort[portIndex] ? Power.On : Power.Off;
-                return Power.Off;
-            }
+            if (DamController.RelayPort.ContainsKey(portIndex))
+                return this.DamController.RelayPort[portIndex] ? Power.On : Power.Off;
+            return Power.Off;
+        }
+
+        public bool IsOpen(int portIndex)
+        {
+            return this.DamController.OptocouplerPort[portIndex];
+        }
+
+        /// <summary>
+        /// 刷新 控制器所有端口的状态
+        /// </summary>
+        /// <returns></returns>
+        public void RefreshStatus()
+        {
+            DamController.RefreshRelayStatus();
+            DamController.RefreshOptocouplerStatus();
         }
 
         /// <summary>
@@ -41,13 +56,19 @@ namespace HY.IO.Ports.Devices.DAM
                 return DamController.Close(portIndex);
         }
 
-        /// <summary>
-        /// 刷新 控制器所有端口的状态
-        /// </summary>
-        /// <returns></returns>
-        public void RefreshStatus()
+        private void DamController_OptocouplerPortsChanged(object sender, DAMEventArgs e)
         {
-            DamController.RefreshRelayStatus();
+            if (OnOptocouplerChange != null)
+            {
+                foreach (var item in e.StatusChanged)
+                {
+                    OnOptocouplerChange.Invoke(this, new OpenCloseEventArgs()
+                    {
+                        PortIndex = item.Key,
+                        IsOpen = item.Value
+                    });
+                }
+            }
         }
     }
 }

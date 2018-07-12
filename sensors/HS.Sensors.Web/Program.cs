@@ -19,8 +19,11 @@ namespace HS.Sensors.Web
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            
-           // .UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureAppConfiguration(f =>
+            {
+                f.AddJsonFile("device.json");
+            })
+
                 .UseStartup<Startup>()
                 .Build();
     }

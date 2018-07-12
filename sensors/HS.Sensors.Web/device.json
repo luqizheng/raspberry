@@ -1,0 +1,22 @@
+{
+  "DeviceSetting": {
+    "PowerControllerSetting": {
+      "ComPath": "COM3",
+      "Pulverizer": 6,
+      "GrayFan": 2,
+      "Pump": 3,
+      "Transfer": 7,
+      "ExhaustMain": 4,
+      "ExhaustSlave": 5,
+      "PlasmaGenerator": 1
+    },
+    "OpenClosePortSetting": {
+      "HighLevelSensor": 1,
+      "LowLevelSensor": 2
+    },
+    "GrayFanRuntime": {
+      "GrayFanSleepSeconds": 30,
+      "GrayFanRunSeconds": 60
+    }
+  }
+}

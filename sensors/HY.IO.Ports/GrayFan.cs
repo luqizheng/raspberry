@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace HY.IO.Ports
 {
-    public class GrayFan : Equipment
+    public class GrayFan : PowerEquipment
     {
         private GrayFanTimeInfo grayFanTimeInfo = new GrayFanTimeInfo();
         private Timer timer;
@@ -28,7 +28,7 @@ namespace HY.IO.Ports
             if (poweOn)
             {
                 var remind = DateTime.Now - (this.grayFanTimeInfo.RunTime ?? DateTime.Now);
-                if (remind.TotalSeconds > this.setting.CurrentValue.GrayFanRunSeconds)
+                if (remind.TotalSeconds > this.setting.CurrentValue.GrayFanRuntime.GrayFanRunSeconds)
                 {
                     this.TurnOff();
                 }
@@ -41,7 +41,7 @@ namespace HY.IO.Ports
                     return;
                 }
                 var remind = DateTime.Now - (this.grayFanTimeInfo.Sleep ?? DateTime.Now);
-                if (remind.TotalSeconds > this.setting.CurrentValue.GrayFanRunSeconds)
+                if (remind.TotalSeconds > this.setting.CurrentValue.GrayFanRuntime.GrayFanRunSeconds)
                 {
                     this.TurnOn();
                 }

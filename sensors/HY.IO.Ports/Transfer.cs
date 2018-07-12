@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class Transfer : Equipment
+    public class Transfer : PowerEquipment
     {
         public Transfer(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {

@@ -22,7 +22,6 @@ namespace HS.Sensors.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
         }
 
         public IConfiguration Configuration { get; }
@@ -34,7 +33,6 @@ namespace HS.Sensors.Web
 
             services.AddLogging(logging =>
             {
-
                 logging.AddConsole();
                 logging.AddDebug();
             });
@@ -49,8 +47,6 @@ namespace HS.Sensors.Web
             services.AddSignalR(options =>
             {
                 options.EnableDetailedErrors = true;
-
-
             });
             services.AddMvc();
         }
@@ -65,7 +61,7 @@ namespace HS.Sensors.Web
 
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -85,6 +81,7 @@ namespace HS.Sensors.Web
         }
 
         private Timer timer;
+
         private void send(object state)
         {
             var context = (ServiceProvider)state;
@@ -104,7 +101,6 @@ namespace HS.Sensors.Web
 
                     Transfer = Terminal.Transfer.PowerStatus
                 }
-
             };
             var hubContext = context.GetService<IHubContext<GarbageTerminalHub>>();
             hubContext.Clients.All.SendAsync("status", status);

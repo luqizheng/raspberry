@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class ExhaustMain : Equipment
+    public class ExhaustMain : PowerEquipment
     {
         public ExhaustMain(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {

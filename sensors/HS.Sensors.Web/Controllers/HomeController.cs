@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using HS.Sensors.Web.Models;
 using HY.IO.Ports.Extentions;
-using Microsoft.CodeAnalysis.Options;
 using Microsoft.Extensions.Options;
 using HY.IO.Ports;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace HS.Sensors.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IOptionsMonitor<DeviceSetting> setting;
+
         public GarbageTerminal Terminal { get; }
 
-        public HomeController(GarbageTerminal terminal)
+        public HomeController(GarbageTerminal terminal, IOptionsMonitor<DeviceSetting> setting)
         {
             Terminal = terminal;
+            this.setting = setting;
         }
 
         public IActionResult Index()
@@ -34,6 +34,79 @@ namespace HS.Sensors.Web.Controllers
         public IActionResult Setting()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult PowerSetting(DevicePowerPameter parameter)
+        {
+            switch (parameter.EquipmentName)
+            {
+                case "Pulverizer":
+
+                    setting.CurrentValue.PowerControllerSetting.Pulverizer = parameter.PowerIndex;
+                    break;
+
+                case "GrayFan":
+                    setting.CurrentValue.PowerControllerSetting.GrayFan = parameter.PowerIndex;
+                    break;
+
+                case "Pump":
+                    setting.CurrentValue.PowerControllerSetting.Pump = parameter.PowerIndex;
+                    break;
+
+                case "PlasmaGenerator":
+                    setting.CurrentValue.PowerControllerSetting.PlasmaGenerator = parameter.PowerIndex;
+                    break;
+
+                case "ExhaustMain":
+                    setting.CurrentValue.PowerControllerSetting.ExhaustMain = parameter.PowerIndex;
+                    break;
+
+                case "ExhaustSlave":
+                    setting.CurrentValue.PowerControllerSetting.ExhaustSlave = parameter.PowerIndex;
+                    break;
+
+                case "Transfer":
+                    setting.CurrentValue.PowerControllerSetting.Transfer = parameter.PowerIndex;
+                    break;
+            }
+
+            using (var write = new StreamWriter("device.json"))
+            {
+                var writer = TextWriter.Synchronized(write);
+                writer.Write(JsonConvert.SerializeObject(new { DeviceSetting = setting.CurrentValue }, Formatting.Indented));
+            }
+            return Ok("true");
+        }
+
+        [HttpPost]
+        public IActionResult GrayFanRunTime(GrayFanRuntime runtime)
+        {
+            setting.CurrentValue.GrayFanRuntime.GrayFanRunSeconds = runtime.GrayFanRunSeconds;
+            setting.CurrentValue.GrayFanRuntime.GrayFanSleepSeconds = runtime.GrayFanSleepSeconds;
+
+            using (var write = new StreamWriter("device.json"))
+            {
+                var writer = TextWriter.Synchronized(write);
+                writer.Write(JsonConvert.SerializeObject(new { DeviceSetting = setting.CurrentValue }, Formatting.Indented));
+            }
+            return Ok("true");
+        }
+
+        public IActionResult Shutdown()
+        {
+            if (Terminal.Enable)
+            {
+                Terminal.GrayFan.TurnOn();
+                Terminal.Pulverizer.TurnOff();
+                Terminal.Transfer.TurnOff();
+                Terminal.PlasmaGenerator.TurnOn();
+                Terminal.ExhaustMain.TurnOn();
+                Terminal.ExhaustSlave.TurnOn();
+            }
+
+            HY.IO.Ports.Helper.ShellHelper.Bash("sudo reboot now");
+            return Ok("ture");
         }
 
         public IActionResult Reboot()

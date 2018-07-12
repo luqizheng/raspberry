@@ -1,47 +1,143 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-
+@using  Microsoft.Extensions.Options;
+@using HY.IO.Ports.Extentions;
+@inject IOptionsMonitor<DeviceSetting> setting
 
 <div class="row">
 
-
     <div class="panel">
-        <div class="panel-title">
-            单项控制
+        <div class="panel-heading">
+            设置
         </div>
         <div class="panel-body">
-            <div id="buttonPanel">
-                <button id="PlasmaGenerator" class="btn btn-default">等离子</button>
-                <button id="GrayFan" class="btn btn-primary">吹灰</button>
-                <button id="Pump" class="btn btn-primary">水泵</button>
-                <button id="ExhaustMain" class="btn btn-default">风机组</button>
-                <button id="ExhaustSlave" class="btn btn-default">风机组</button>
+            <form id="buttonPanel" class="form-horizontal">
+                <div class="form-group" id="PlasmaGenerator">
+                    <label for="PlasmaGenerator_powerIndex" class="col-sm-2">离子发生器</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="PlasmaGenerator_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.PlasmaGenerator">
+                    </div>
 
-            </div>
+                    <div class="col-sm-2">
+                        <button id="plasmaGenerator_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="GrayFan">
+                    <label for="exampleInputEmail1" class="col-sm-2">吹灰 继电器位置</label>
+                    <div class="col-sm-2">
+                        <input type="number" class="form-control" id="GrayFan_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.GrayFan">
+                    </div>
+                    <label for="exampleInputEmail1" class="col-sm-2">运转时长</label>
+                    <div class="col-sm-1">
+
+                        <input type="number" class="form-control" id="GrayFan_RunningTime" placeholder="运转时长 " value="@setting.CurrentValue.GrayFanRuntime.GrayFanRunSeconds" />
+                    </div> 
+                    <label for="exampleInputEmail1" class="col-sm-2">休眠时长</label>
+                    <div class="col-sm-1">
+                        <input type="number" class="form-control" id="GrayFan_SleepTime" placeholder="休眠时长" value="@setting.CurrentValue.GrayFanRuntime.GrayFanSleepSeconds" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="grayFan_Power" class="btn btn-default equip"><span>启动</span> <i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+                <div class="form-group" id="Pump">
+                    <label for="Pump_powerIndex" class="col-sm-2">水泵 继电器位置</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="Pump_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.Pump">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="pump_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="ExhaustMain">
+                    <label for="ExhaustMain_powerIndex" class="col-sm-2">主风机 继电器位置</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="ExhaustMain_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.ExhaustMain">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="exhaustMain_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="ExhaustSlave">
+                    <label for="exampleInputEmail1" class="col-sm-2">次风机 继电器位置</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="ExhaustSlave_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.ExhaustSlave">
+                    </div><div class="col-sm-2">
+                        <button id="exhaustSlave_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="Pulverizer">
+                    <label for="exampleInputEmail1" class="col-sm-2">碎料器 继电器位置</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="Pulverizer_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.Pulverizer">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="pulverizer_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-group" id="Transfer">
+                    <label for="Pulverizer_powerIndex" class="col-sm-2">传输 继电器位置</label><div class="col-sm-8">
+                        <input type="number" class="form-control" id="Transfer_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.Transfer">
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="transfer_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
 </div>
 
-<div>
-    <div class="panel">
-        <div class="panel-title">
-            送料控制
-        </div>
-        <div class="panel-body">
-            <div id="buttonPanel">
-                <button id="Pulverizer" class="btn btn-default">粉碎器</button>
-                <button id="Transfer" class="btn btn-default">传输</button>
-            </div>
-        </div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#PlasmaGenerator_powerIndex,#Transfer_powerIndex,#Pulverizer_powerIndex,#GrayFan_powerIndex,#ExhaustMain_powerIndex,#ExhaustSlave_powerIndex,#Pump_powerIndex").change(function () {
+                var device = $(this).attr("id").split("_")[0];
+                $.post("/home/PowerSetting", {
+                    equipmentName: device,
+                    PowerIndex: $(this).val()
+                }, function (data) {
+                    bootbox.alert("设置完成");
+                })
+            })
 
-    </div>
-</div>
+            $("#GrayFan_RunningTime ,#GrayFan_SleepTime").change(function () {
+                $.post("/home/GrayFanRunTime", {
+                    GrayFanSleepSeconds: $("#GrayFan_SleepTime").val(),
+                    GrayFanRunSeconds: $("#GrayFan_RunningTime").val()
+                }, function (data) {
+                    bootbox.alert("设置完成");
+                })
+            })
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        
-    });
-</script>
+            $("#buttonPanel .equip").click(function (e) {
+                e.preventDefault();
+                var $this = $(this);
+                var eqName = $(this).attr("id").split("_")[0];
+                var enable = $this.find("i").hasClass("fa-spin");
+                GarbageTerminal[eqName].call(this, !enable, function (data) {
+
+                    console.log(data);
+                })
+
+            })
+
+            subcriptStatus(function (status) {
+
+                for (var key in status.power) {
+                    var isOn = status.power[key] == 1;
+                    var tar = $("#" + key + "_Power");
+                    tar.toggleClass("btn-success", isOn);
+                    tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
+                    tar.find('span').text(isOn ? "停止" : "开始");
+                }
+            })
+        });
+    </script>
+}

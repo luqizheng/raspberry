@@ -5,9 +5,11 @@ namespace HS.Sensors.Web.Controllers
     public class EqipmentParameter
     {
         public Power Power { get; set; }
-
-
     }
 
- 
+    public class DevicePowerPameter
+    {
+        public int PowerIndex { get; set; }
+        public string EquipmentName { get; set; }
+    }
 }

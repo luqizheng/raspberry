@@ -5,6 +5,11 @@ using System.Collections.Generic;
 
 namespace HY.IO.Ports.Devices.DAM
 {
+    public class DAMEventArgs : EventArgs
+    {
+        public IDictionary<int, bool> StatusChanged { get; set; }
+    }
+
     public abstract class DAM : IDisposable
     {
         protected static Crc crc;
@@ -45,6 +50,10 @@ namespace HY.IO.Ports.Devices.DAM
 
             device.Open();
         }
+
+        public event EventHandler<DAMEventArgs> RelayPortStatusChanged;
+
+        public event EventHandler<DAMEventArgs> OptocouplerPortsChanged;
 
         public enum QueryType
         {
@@ -141,19 +150,33 @@ namespace HY.IO.Ports.Devices.DAM
 
             //                atutResetEvet.Reset();
             //Log(command, "刷新状态");
+            var changed = new Dictionary<int, bool>();
             var arg2 = device.Write(command);
             if (!Verify(arg2)) return;
             var data = arg2[3];
-            for (int i = 0; i < this.RelayPortsCount; i++)
+            for (int i = 0; i < this.OptocouplerPortsCount; i++)
             {
                 var bit = 1 << i;
                 var result = (data & bit);
-                this.RelayPort[i] = result != 0;
+                var src = this.OptocouplerPort[i];
+                this.OptocouplerPort[i] = result != 0;
+                if (src != this.OptocouplerPort[i])
+                {
+                    changed.TryAdd(i, this.OptocouplerPort[i]);
+                }
             }
             //Log(command, "刷新状态-end");
 
             if (!openByAnother)
                 device.Close();
+
+            if (changed.Count > 0)
+            {
+                OptocouplerPortsChanged?.Invoke(this, new DAMEventArgs()
+                {
+                    StatusChanged = changed
+                });
+            }
         }
 
         /// <summary>
@@ -174,8 +197,7 @@ namespace HY.IO.Ports.Devices.DAM
                 device.Open();
             }
 
-            //                atutResetEvet.Reset();
-            //Log(command, "刷新状态");
+            var changed = new Dictionary<int, bool>();
             var arg2 = device.Write(command);
             if (!Verify(arg2)) return;
             var data = arg2[3];
@@ -183,12 +205,25 @@ namespace HY.IO.Ports.Devices.DAM
             {
                 var bit = 1 << i;
                 var result = (data & bit);
-                this.RelayPort[i] = result != 0;
+                var src = RelayPort[i];
+                RelayPort[i] = result != 0;
+                if (src != RelayPort[i])
+                {
+                    changed.TryAdd(i, RelayPort[i]);
+                }
             }
             //Log(command, "刷新状态-end");
 
             if (!openByAnother)
                 device.Close();
+
+            if (changed.Count > 0)
+            {
+                RelayPortStatusChanged?.Invoke(this, new DAMEventArgs()
+                {
+                    StatusChanged = changed
+                });
+            }
         }
 
         /// <summary>

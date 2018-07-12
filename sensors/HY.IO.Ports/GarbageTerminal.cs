@@ -37,6 +37,7 @@ namespace HY.IO.Ports
                 return;
             isRunning = true;
             controller.RefreshStatus();
+
             StatusRefreched?.Invoke(this, EventArgs.Empty);
             isRunning = false;
         }
@@ -96,7 +97,7 @@ namespace HY.IO.Ports
                  }, token);
         }
 
-        public void TurnOff()
+        public Task TurnOff()
         {
             if (turnOnTask != null && !turnOnTask.IsCompleted)
             {
@@ -109,18 +110,18 @@ namespace HY.IO.Ports
 
             var token = terminalTurnOffTask.Token;
 
-            turnOffTask = Task.Run(() =>
-              {
-                  ExhaustMain.TurnOff();
-                  Thread.Sleep(200);
-                  ExhaustSlave.TurnOff();
-                  Thread.Sleep(10000);
-                  Pump.TurnOff();
-                  Thread.Sleep(200);
-                  PlasmaGenerator.TurnOff();
+            return turnOffTask = Task.Run(() =>
+               {
+                   ExhaustMain.TurnOff();
+                   Thread.Sleep(200);
+                   ExhaustSlave.TurnOff();
+                   Thread.Sleep(10000);
+                   Pump.TurnOff();
+                   Thread.Sleep(200);
+                   PlasmaGenerator.TurnOff();
 
-                  this.GrayFan.TurnOff();
-              }, token);
+                   this.GrayFan.TurnOff();
+               }, token);
         }
 
         private CancellationTokenSource _transferTokenSource = new CancellationTokenSource();

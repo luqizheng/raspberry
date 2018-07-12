@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class ExhaustSlave : Equipment
+    public class ExhaustSlave : PowerEquipment
     {
         public ExhaustSlave(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
@@ -14,7 +14,7 @@ namespace HY.IO.Ports
 
         protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.PowerControllerSetting.ExhaustMain;
+            return setting.PowerControllerSetting.ExhaustSlave;
         }
     }
 }

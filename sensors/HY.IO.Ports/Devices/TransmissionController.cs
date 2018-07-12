@@ -4,9 +4,12 @@ namespace HY.IO.Ports.Devices
 {
     public class TransmissionController : ITransmissionController
     {
-        public Power this[int portIndex] => throw new NotImplementedException();
-
         public void Adjst(Speed speed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Power GetPowerStatus(int portIndex)
         {
             throw new NotImplementedException();
         }

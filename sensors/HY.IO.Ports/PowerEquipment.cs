@@ -3,12 +3,12 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public abstract class Equipment
+    public abstract class PowerEquipment
     {
         private readonly IPowerController controller;
         protected readonly IOptionsMonitor<DeviceSetting> setting;
 
-        public Equipment(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
+        public PowerEquipment(IPowerController controller, IOptionsMonitor<DeviceSetting> setting)
         {
             this.controller = controller;
             this.setting = setting;
@@ -26,7 +26,7 @@ namespace HY.IO.Ports
             get
             {
                 var index = PortIndex(setting.CurrentValue);
-                return controller[index];
+                return controller.GetPowerStatus(index);
             }
         }
 
