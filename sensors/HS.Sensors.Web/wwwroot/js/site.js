@@ -8,7 +8,6 @@ window.GarbageTerminal = {
         Turn("GrayFan", bEnable, callback);
     },
 
-
     pump: function (bEnable, callback) {
         Turn("Pump", bEnable, callback);
     },
@@ -36,8 +35,6 @@ window.GarbageTerminal = {
             var data = resp.responseJSON
             alert(data.message);
         })
-
-
     },
 
     turn: function (bEnable, callback) {
@@ -47,21 +44,17 @@ window.GarbageTerminal = {
             var data = resp.responseJSON
             alert(data.message);
         })
-
-
     },
 
     startTransfer: function (doNotStop, callback) {
         $.post("/device/StartTransfer", {
-            RunningSeconds: doNotStop ? 300 : 30
+            RunningSeconds: doNotStop ? 60 * 60 * 3 : 60 * 3
         }, function (data) {
             callback(data);
         }).fail(function (resp) {
             var data = resp.responseJSON
             alert(data.message);
         })
-
-
     },
     stopTransfer: function (callback) {
         $.get("/device/StopTransfer", function (data) {
@@ -71,12 +64,10 @@ window.GarbageTerminal = {
             //{"success":true,"message":"还没启动，请启动后再执行传输"}
             alert(data.message);
         })
-
     }
 }
 
 function Turn(device, bEnable, callback) {
-
     $.post("/Device/" + device, {
         power: bEnable ? 1 : 0
     }, function (data) {
@@ -89,7 +80,6 @@ function Turn(device, bEnable, callback) {
 
 var connection
 function subcriptStatus(onStatucChange) {
-
     connection = new signalR.HubConnectionBuilder()
         .withUrl("/GarbageTerminal")
         .configureLogging(signalR.LogLevel.Trace)

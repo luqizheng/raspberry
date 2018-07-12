@@ -2,6 +2,7 @@
 using HY.IO.Ports;
 using HY.IO.Ports.Devices.DAM;
 using HY.IO.Ports.Extentions;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
@@ -45,11 +46,18 @@ namespace HS.Sensors.Web
                 options.EnableDetailedErrors = true;
             });
             services.AddMvc();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseAuthentication();
             app.UseSignalR(routes =>
             {
                 routes.MapHub<GarbageTerminalHub>("/GarbageTerminal");

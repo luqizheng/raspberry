@@ -3,7 +3,7 @@
 }
 @using  Microsoft.Extensions.Options;
 @using HY.IO.Ports.Extentions;
-@inject IOptionsMonitor<DeviceSetting>  setting
+@inject IOptionsMonitor<DeviceSetting>    setting
 
 <div class="row">
 
@@ -73,8 +73,12 @@
 
                 <div class="form-group" id="Pulverizer">
                     <label for="exampleInputEmail1" class="col-sm-2">碎料器 继电器位置</label>
-                    <div class="col-sm-8">
+                    <div class="col-sm-3">
                         <input type="number" class="form-control" id="Pulverizer_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.Pulverizer">
+                    </div>
+                    <label for="exampleInputEmail1" class="col-sm-2">运行时间</label>
+                    <div class="col-sm-3">
+                        <input type="number" class="form-control" id="Pulverizer_runningTime" placeholder="碎料器运行时间" value="@setting.CurrentValue.TransferRuntime.PulverizerRuntimerSeconds">
                     </div>
                     <div class="col-sm-2">
                         <button id="pulverizer_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
@@ -82,10 +86,19 @@
                 </div>
 
                 <div class="form-group" id="Transfer">
-                    <label for="Pulverizer_powerIndex" class="col-sm-2">传输 继电器位置</label><div class="col-sm-8">
+                    <label for="Pulverizer_powerIndex" class="col-sm-2">传输 继电器位置</label>
+                    <div class="col-sm-1">
                         <input type="number" class="form-control" id="Transfer_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.Transfer">
                     </div>
-                    <div class="col-sm-2">
+                    <label for="Pulverizer_powerIndex" class="col-sm-2">启动时机（碎料器启动后）</label>
+                    <div class="col-sm-1">
+                        <input type="number" class="form-control" id="Transfer_startTime" placeholder="秒" value="@setting.CurrentValue.TransferRuntime.TransferStartAfterPulverizerStart" />
+                    </div>
+                    <label for="Pulverizer_powerIndex" class="col-sm-3">停止时机（碎料器停止后）</label>
+                    <div class="col-sm-1">
+                        <input type="number" class="form-control" id="Transfer_stopTime" placeholder="秒" value="@setting.CurrentValue.TransferRuntime.TransferStopAfterPulverizerStop" />
+                    </div>
+                    <div class="col-sm-1">
                         <button id="transfer_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
                     </div>
                 </div>
@@ -133,7 +146,7 @@
                     var tar = $("#" + key + "_Power");
                     tar.toggleClass("btn-success", isOn);
                     tar.find("i").toggleClass("fa-spin", status.power[key] == 1);
-                    tar.find('span').text(isOn ? "停止" : "开始");
+                    tar.find('span').text(isOn ? "停止" : "启动");
                 }
             })
 
@@ -175,6 +188,18 @@
                     $.post("/home/OpenCloseSetting", {
                         SensorIndex: $(this).val(),
                         SensorName: eqName
+                    }, function (data) {
+                        bootbox.alert("设置完成");
+                    })
+                })
+
+                $("#Pulverizer_runningTime,#Transfer_stopTime,#Transfer_startTime").change(function () {
+                    var $this = $(this);
+                    var eqName = $(this).attr("id").split("_")[0];
+                    $.post("/home/TransferRuntime", {
+                        PulverizerRuntimerSeconds: $("#Pulverizer_runningTime").val(),
+                        TransferStartAfterPulverizerStart: $("#Transfer_startTime").val(),
+                        TransferStopAfterPulverizerStop: $("#Transfer_stopTime").val(),
                     }, function (data) {
                         bootbox.alert("设置完成");
                     })

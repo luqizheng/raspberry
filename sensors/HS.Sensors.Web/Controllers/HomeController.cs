@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using HY.IO.Ports;
 using System.IO;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HS.Sensors.Web.Controllers
 {
@@ -31,6 +32,7 @@ namespace HS.Sensors.Web.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Setting()
         {
             return View();
@@ -106,14 +108,21 @@ namespace HS.Sensors.Web.Controllers
             setting.CurrentValue.GrayFanRuntime.GrayFanRunSeconds = runtime.GrayFanRunSeconds;
             setting.CurrentValue.GrayFanRuntime.GrayFanSleepSeconds = runtime.GrayFanSleepSeconds;
 
-            using (var write = new StreamWriter("device.json"))
-            {
-                var writer = TextWriter.Synchronized(write);
-                writer.Write(JsonConvert.SerializeObject(new { DeviceSetting = setting.CurrentValue }, Formatting.Indented));
-            }
+            Save();
             return Ok("true");
         }
 
+        [HttpPost]
+        public IActionResult TransferRuntime(TransferRuntime runtime)
+        {
+            setting.CurrentValue.TransferRuntime.PulverizerRuntimerSeconds = runtime.PulverizerRuntimerSeconds;
+            setting.CurrentValue.TransferRuntime.TransferStartAfterPulverizerStart = runtime.TransferStartAfterPulverizerStart;
+            setting.CurrentValue.TransferRuntime.TransferStopAfterPulverizerStop = runtime.TransferStopAfterPulverizerStop;
+            Save();
+            return Ok("true");
+        }
+
+        [Authorize]
         public IActionResult Shutdown()
         {
             if (Terminal.Enable)
@@ -130,6 +139,7 @@ namespace HS.Sensors.Web.Controllers
             return Ok("ture");
         }
 
+        [Authorize]
         public IActionResult Reboot()
         {
             if (Terminal.Enable)

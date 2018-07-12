@@ -17,6 +17,11 @@
     "GrayFanRuntime": {
       "GrayFanSleepSeconds": 30,
       "GrayFanRunSeconds": 60
+    },
+    "TransferRuntime": {
+      "PulverizerRuntimerSeconds": 50,
+      "TransferStopAfterPulverizerStop": 30,
+      "TransferStartAfterPulverizerStart": 10
     }
   }
 }
