@@ -78,8 +78,12 @@ namespace HS.Sensors.Web.Controllers
                     setting.CurrentValue.PowerControllerSetting.GrayFan = parameter.PowerIndex;
                     break;
 
-                case "Pump":
+                case "PrimaryPump":
                     setting.CurrentValue.PowerControllerSetting.PrimaryPump = parameter.PowerIndex;
+                    break;
+
+                case "SecondaryPump":
+                    setting.CurrentValue.PowerControllerSetting.SecondaryPump = parameter.PowerIndex;
                     break;
 
                 case "PlasmaGenerator":
