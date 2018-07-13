@@ -2,13 +2,13 @@
   "DeviceSetting": {
     "PowerControllerSetting": {
       "ComPath": "COM3",
-      "Pulverizer": 6,
-      "GrayFan": 2,
-      "Pump": 3,
+      "Pulverizer": 7,
+      "GrayFan": 3,
+      "Pump": 4,
       "Transfer": 7,
-      "ExhaustMain": 4,
-      "ExhaustSlave": 5,
-      "PlasmaGenerator": 1,
+      "ExhaustMain": 2,
+      "ExhaustSlave": 0,
+      "PlasmaGenerator": 6,
       "UVLight": 1
     },
     "OpenClosePortSetting": {

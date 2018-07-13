@@ -81,19 +81,19 @@ namespace HS.Sensors.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            timer = new Timer(send, app.ApplicationServices, 2000, 2000);
+            timer = new Timer(Send, app.ApplicationServices, 2000, 2000);
         }
 
         private Timer timer;
 
-        private void send(object state)
+        private void Send(object state)
         {
             var context = (ServiceProvider)state;
             var Terminal = context.GetService<GarbageTerminal>();
             var status = new
             {
-                Enable = Terminal.Enable,
-                TransferModelEnable = Terminal.TransferModelEnable,
+                Terminal.Enable,
+                Terminal.TransferModelEnable,
                 OpenClose = new
                 {
                     Terminal.ReactionCabin.IsFull,

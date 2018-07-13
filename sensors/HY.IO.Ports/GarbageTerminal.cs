@@ -47,6 +47,7 @@ namespace HY.IO.Ports
                 return Pump.PowerStatus == Power.On
                     || PlasmaGenerator.PowerStatus == Power.On
                     || ExhaustMain.PowerStatus == Power.On
+                    || UVLight.PowerStatus == Power.On
                     || ExhaustSlave.PowerStatus == Power.On;
             }
         }
