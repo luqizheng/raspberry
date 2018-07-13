@@ -44,7 +44,8 @@ namespace HS.Sensors.Web.Controllers
                 PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
                 Pulverizer = terminal.Pulverizer.PowerStatus,
                 Pump = terminal.Pump.PowerStatus,
-                Transfer = terminal.Transfer.PowerStatus
+                Transfer = terminal.Transfer.PowerStatus,
+                UVLight = terminal.UVLight.PowerStatus,
             };
             return Ok(status);
         }
@@ -104,6 +105,17 @@ namespace HS.Sensors.Web.Controllers
                 terminal.ExhaustSlave.TurnOn();
             else
                 terminal.ExhaustSlave.TurnOff();
+
+            return this.Ok(true);
+        }
+
+        [HttpPost]
+        public IActionResult UVLight(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.UVLight.TurnOn();
+            else
+                terminal.UVLight.TurnOff();
 
             return this.Ok(true);
         }

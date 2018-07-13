@@ -21,6 +21,7 @@ namespace HY.IO.Ports.Extentions
             service.AddTransient<Transfer>();
             service.AddSingleton<GarbageTerminal>();
             service.AddTransient<ReactionCabin>();
+            service.AddTransient<UVLight>();
             return service;
         }
     }

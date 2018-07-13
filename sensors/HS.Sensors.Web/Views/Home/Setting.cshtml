@@ -23,7 +23,16 @@
                         <button id="plasmaGenerator_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
                     </div>
                 </div>
+                <div class="form-group" id="UVLight">
+                    <label for="PlasmaGenerator_powerIndex" class="col-sm-2">UV光</label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="UVLight_powerIndex" placeholder="继电器触点位置" value="@setting.CurrentValue.PowerControllerSetting.UVLight">
+                    </div>
 
+                    <div class="col-sm-2">
+                        <button id="uvLight_Power" class="btn btn-default equip"><span>启动</span><i class="fa fa-cog"></i></button>
+                    </div>
+                </div>
                 <div class="form-group" id="GrayFan">
                     <label for="exampleInputEmail1" class="col-sm-2">吹灰 继电器位置</label>
                     <div class="col-sm-2">
@@ -151,7 +160,7 @@
             })
 
             $(document).ready(function () {
-                $("#PlasmaGenerator_powerIndex,#Transfer_powerIndex,#Pulverizer_powerIndex,#GrayFan_powerIndex,#ExhaustMain_powerIndex,#ExhaustSlave_powerIndex,#Pump_powerIndex").change(function () {
+                $("#PlasmaGenerator_powerIndex,#Transfer_powerIndex,#Pulverizer_powerIndex,#GrayFan_powerIndex,#ExhaustMain_powerIndex,#ExhaustSlave_powerIndex,#Pump_powerIndex,#UVLight_powerIndex").change(function () {
                     var device = $(this).attr("id").split("_")[0];
                     $.post("/home/PowerSetting", {
                         equipmentName: device,

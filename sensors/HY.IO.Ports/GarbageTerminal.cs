@@ -20,7 +20,7 @@ namespace HY.IO.Ports
         public GarbageTerminal(Pulverizer pulverizer,
             GrayFan grayFan, Pump pump, PlasmaGenerator plasmaGenerator,
              ExhaustMain exhaustMain, ExhaustSlave exhaustSlave, Transfer transfer,
-             ReactionCabin reactionCabin,
+             ReactionCabin reactionCabin, UVLight uvLight,
              IPowerController powerController, IOptionsMonitor<DeviceSetting> deviceSetting)
         {
             Pulverizer = pulverizer;
@@ -31,6 +31,7 @@ namespace HY.IO.Ports
             ExhaustSlave = exhaustSlave;
             Transfer = transfer;
             ReactionCabin = reactionCabin;
+            UVLight = uvLight;
             this.controller = powerController;
             DeviceSetting = deviceSetting;
             this.GrayFan.Terminal = this;
@@ -76,11 +77,20 @@ namespace HY.IO.Ports
         public Pulverizer Pulverizer { get; set; }
 
         /// <summary>
-        /// 水泵
+        /// 水泵1
         /// </summary>
         public Pump Pump { get; set; }
 
         public ReactionCabin ReactionCabin { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
+        public UVLight UVLight { get; }
+
+        /// <summary>
+        ///
+        /// </summary>
         public IOptionsMonitor<DeviceSetting> DeviceSetting { get; }
 
         public Transfer Transfer { get; set; }
@@ -175,6 +185,7 @@ namespace HY.IO.Ports
                    Pump.TurnOff();
                    Thread.Sleep(200);
                    PlasmaGenerator.TurnOff();
+                   UVLight.TurnOff();
 
                    this.GrayFan.TurnOff();
                }, token);
@@ -202,6 +213,8 @@ namespace HY.IO.Ports
                      Pump.TurnOn();
                      Thread.Sleep(5000);
                      PlasmaGenerator.TurnOn();
+                     UVLight.TurnOn();
+
                      Thread.Sleep(3000);
                      ExhaustMain.TurnOn();
                      Thread.Sleep(200);

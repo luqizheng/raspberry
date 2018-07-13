@@ -8,7 +8,8 @@
       "Transfer": 7,
       "ExhaustMain": 4,
       "ExhaustSlave": 5,
-      "PlasmaGenerator": 1
+      "PlasmaGenerator": 1,
+      "UVLight": 1
     },
     "OpenClosePortSetting": {
       "FullSensor": 1,

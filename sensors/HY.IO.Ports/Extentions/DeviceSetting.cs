@@ -78,9 +78,12 @@
         public int Pulverizer { get; set; }
         public int GrayFan { get; set; }
         public int Pump { get; set; }
+
         public int Transfer { get; set; }
         public int ExhaustMain { get; set; }
         public int ExhaustSlave { get; set; }
         public int PlasmaGenerator { get; set; }
+
+        public int UVLight { get; set; }
     }
 }

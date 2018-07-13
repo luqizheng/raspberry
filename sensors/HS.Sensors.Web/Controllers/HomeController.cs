@@ -97,6 +97,10 @@ namespace HS.Sensors.Web.Controllers
                 case "Transfer":
                     setting.CurrentValue.PowerControllerSetting.Transfer = parameter.PowerIndex;
                     break;
+
+                case "UVLight":
+                    setting.CurrentValue.PowerControllerSetting.UVLight = parameter.PowerIndex;
+                    break;
             }
             Save();
             return Ok("true");
@@ -131,6 +135,7 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
                 Terminal.PlasmaGenerator.TurnOn();
+                Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
             }
@@ -148,6 +153,7 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
                 Terminal.PlasmaGenerator.TurnOn();
+                Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
             }

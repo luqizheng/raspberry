@@ -107,7 +107,7 @@ namespace HS.Sensors.Web
                     PlasmaGenerator = Terminal.PlasmaGenerator.PowerStatus,
                     Pulverizer = Terminal.Pulverizer.PowerStatus,
                     Pump = Terminal.Pump.PowerStatus,
-
+                    UVLight = Terminal.UVLight.PowerStatus,
                     Transfer = Terminal.Transfer.PowerStatus
                 }
             };
