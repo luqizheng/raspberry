@@ -37,8 +37,8 @@ namespace HS.Sensors.Web
             services.AddSingleton<DAM>(sp =>
             {
                 var deviceSetting = sp.GetRequiredService<IOptionsMonitor<DeviceSetting>>();
-                var logger = sp.GetRequiredService<ILogger<DAM0404>>();
-                return new DAM0404(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
+                var logger = sp.GetRequiredService<ILogger<DAM0808>>();
+                return new DAM0808(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
             });
             services.AddControllerWatch<DAMPowerController, DAMPowerController>();
             services.AddSignalR(options =>
