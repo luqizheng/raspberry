@@ -103,6 +103,13 @@ namespace HY.IO.Ports
             if (!this.Enable)
 
                 throw new TerminalException("还没启动，请启动后再执行传输");
+            var setting = DeviceSetting.CurrentValue.TransferRuntime;
+            var pulverizerRunningTime = setting.PulverizerRuntimerSeconds;
+
+            if (transfer.RunningSeconds > pulverizerRunningTime)
+            {
+                pulverizerRunningTime = transfer.RunningSeconds;
+            }
             _transferTokenSource = new CancellationTokenSource(transfer.RunningSeconds * 1000);
             _transferEquipment = _transferTokenSource.Token;
 
@@ -111,16 +118,16 @@ namespace HY.IO.Ports
                  Pulverizer.TurnOn();
                  var pulverizerStartTime = DateTime.Now;
 
-                 Thread.Sleep(DeviceSetting.CurrentValue.TransferRuntime.TransferStartAfterPulverizerStart * 1000);
+                 Thread.Sleep(setting.TransferStartAfterPulverizerStart * 1000);
 
                  Transfer.TurnOn();
 
                  var counter = DateTime.Now - pulverizerStartTime;
-                 var remindSeconds = DeviceSetting.CurrentValue.TransferRuntime.PulverizerRuntimerSeconds - Convert.ToInt32(counter.TotalSeconds);
+                 var remindSeconds = pulverizerRunningTime - Convert.ToInt32(counter.TotalSeconds);
                  Thread.Sleep(remindSeconds * 1000);
 
                  Pulverizer.TurnOff();
-                 Thread.Sleep(DeviceSetting.CurrentValue.TransferRuntime.TransferStopAfterPulverizerStop * 1000);
+                 Thread.Sleep(setting.TransferStopAfterPulverizerStop * 1000);
 
                  this.Transfer.TurnOff();
              }, _transferEquipment);
