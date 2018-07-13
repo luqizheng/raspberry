@@ -2,13 +2,14 @@
   "DeviceSetting": {
     "PowerControllerSetting": {
       "ComPath": "COM3",
-      "Pulverizer": 7,
-      "GrayFan": 3,
-      "Pump": 4,
-      "Transfer": 7,
+      "Pulverizer": 3,
+      "GrayFan": 2,
+      "PrimaryPump": 0,
+      "SecondaryPump": 0,
+      "Transfer": 3,
       "ExhaustMain": 2,
       "ExhaustSlave": 0,
-      "PlasmaGenerator": 6,
+      "PlasmaGenerator": 1,
       "UVLight": 1
     },
     "OpenClosePortSetting": {
@@ -17,7 +18,7 @@
     },
     "GrayFanRuntime": {
       "GrayFanSleepSeconds": 30,
-      "GrayFanRunSeconds": 60
+      "GrayFanRunSeconds": 59
     },
     "TransferRuntime": {
       "PulverizerRuntimerSeconds": 50,

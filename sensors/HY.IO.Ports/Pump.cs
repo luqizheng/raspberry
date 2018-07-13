@@ -3,15 +3,27 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class Pump : PowerEquipment
+    public class PrimaryPump : PowerEquipment
     {
-        public Pump(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
+        public PrimaryPump(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
         }
 
         protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.PowerControllerSetting.Pump;
+            return setting.PowerControllerSetting.PrimaryPump;
+        }
+    }
+
+    public class SecondaryPump : PowerEquipment
+    {
+        public SecondaryPump(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
+        {
+        }
+
+        protected override int PortIndex(DeviceSetting setting)
+        {
+            return setting.PowerControllerSetting.SecondaryPump;
         }
     }
 }

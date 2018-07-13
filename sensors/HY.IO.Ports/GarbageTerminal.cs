@@ -18,14 +18,14 @@ namespace HY.IO.Ports
         private Task turnOnTask;
 
         public GarbageTerminal(Pulverizer pulverizer,
-            GrayFan grayFan, Pump pump, PlasmaGenerator plasmaGenerator,
+            GrayFan grayFan, PrimaryPump pump, PlasmaGenerator plasmaGenerator,
              ExhaustMain exhaustMain, ExhaustSlave exhaustSlave, Transfer transfer,
-             ReactionCabin reactionCabin, UVLight uvLight,
+             ReactionCabin reactionCabin, UVLight uvLight, SecondaryPump secondary,
              IPowerController powerController, IOptionsMonitor<DeviceSetting> deviceSetting)
         {
             Pulverizer = pulverizer;
             GrayFan = grayFan;
-            this.Pump = pump;
+            this.PrimaryPump = pump;
             PlasmaGenerator = plasmaGenerator;
             ExhaustMain = exhaustMain;
             ExhaustSlave = exhaustSlave;
@@ -35,6 +35,7 @@ namespace HY.IO.Ports
             this.controller = powerController;
             DeviceSetting = deviceSetting;
             this.GrayFan.Terminal = this;
+            this.SecondaryPump = secondary;
         }
 
         /// <summary>
@@ -44,7 +45,7 @@ namespace HY.IO.Ports
         {
             get
             {
-                return Pump.PowerStatus == Power.On
+                return PrimaryPump.PowerStatus == Power.On
                     || PlasmaGenerator.PowerStatus == Power.On
                     || ExhaustMain.PowerStatus == Power.On
                     || UVLight.PowerStatus == Power.On
@@ -80,7 +81,12 @@ namespace HY.IO.Ports
         /// <summary>
         /// 水泵1
         /// </summary>
-        public Pump Pump { get; set; }
+        public PrimaryPump PrimaryPump { get; set; }
+
+        /// <summary>
+        /// 水泵2
+        /// </summary>
+        public SecondaryPump SecondaryPump { get; set; }
 
         public ReactionCabin ReactionCabin { get; }
 
@@ -183,7 +189,7 @@ namespace HY.IO.Ports
                    Thread.Sleep(200);
                    ExhaustSlave.TurnOff();
                    Thread.Sleep(10000);
-                   Pump.TurnOff();
+                   PrimaryPump.TurnOff();
                    Thread.Sleep(200);
                    PlasmaGenerator.TurnOff();
                    UVLight.TurnOff();
@@ -211,7 +217,7 @@ namespace HY.IO.Ports
                      Thread.Sleep(200);
                      this.Transfer.TurnOff();
 
-                     Pump.TurnOn();
+                     PrimaryPump.TurnOn();
                      Thread.Sleep(5000);
                      PlasmaGenerator.TurnOn();
                      UVLight.TurnOn();

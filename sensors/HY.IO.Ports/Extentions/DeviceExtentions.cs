@@ -14,7 +14,8 @@ namespace HY.IO.Ports.Extentions
             service.AddSingleton<IOpenCloseController, T1>();
             service.AddTransient<GrayFan>();
             service.AddTransient<Pulverizer>();
-            service.AddTransient<Pump>();
+            service.AddTransient<PrimaryPump>();
+            service.AddTransient<SecondaryPump>();
             service.AddTransient<ExhaustSlave>();
             service.AddTransient<ExhaustMain>();
             service.AddTransient<PlasmaGenerator>();

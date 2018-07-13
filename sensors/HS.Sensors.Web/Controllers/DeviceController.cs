@@ -43,7 +43,7 @@ namespace HS.Sensors.Web.Controllers
                 GrayFan = terminal.GrayFan.PowerStatus,
                 PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
                 Pulverizer = terminal.Pulverizer.PowerStatus,
-                Pump = terminal.Pump.PowerStatus,
+                Pump = terminal.PrimaryPump.PowerStatus,
                 Transfer = terminal.Transfer.PowerStatus,
                 UVLight = terminal.UVLight.PowerStatus,
             };
@@ -78,12 +78,22 @@ namespace HS.Sensors.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Pump(EqipmentParameter enable)
+        public IActionResult PrimaryPump(EqipmentParameter enable)
         {
             if (enable.Power == Power.On)
-                terminal.Pump.TurnOn();
+                terminal.PrimaryPump.TurnOn();
             else
-                terminal.Pump.TurnOff();
+                terminal.PrimaryPump.TurnOff();
+            return this.Ok(true);
+        }
+
+        [HttpPost]
+        public IActionResult SecondaryPump(EqipmentParameter enable)
+        {
+            if (enable.Power == Power.On)
+                terminal.SecondaryPump.TurnOn();
+            else
+                terminal.SecondaryPump.TurnOff();
             return this.Ok(true);
         }
 

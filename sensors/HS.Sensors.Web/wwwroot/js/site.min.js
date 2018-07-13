@@ -9,8 +9,12 @@ window.GarbageTerminal = {
     },
 
 
-    pump: function (bEnable, callback) {
-        Turn("Pump", bEnable, callback);
+    primaryPump: function (bEnable, callback) {
+        Turn("primaryPump", bEnable, callback);
+    },
+
+    secondaryPump: function (benabe, callback) {
+        Turn("secondaryPump", benabe, callback);
     },
 
     exhaustMain: function (bEnable, callback) {

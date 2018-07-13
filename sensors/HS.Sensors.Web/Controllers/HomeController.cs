@@ -79,7 +79,7 @@ namespace HS.Sensors.Web.Controllers
                     break;
 
                 case "Pump":
-                    setting.CurrentValue.PowerControllerSetting.Pump = parameter.PowerIndex;
+                    setting.CurrentValue.PowerControllerSetting.PrimaryPump = parameter.PowerIndex;
                     break;
 
                 case "PlasmaGenerator":

@@ -77,7 +77,9 @@
         public string ComPath { get; set; }
         public int Pulverizer { get; set; }
         public int GrayFan { get; set; }
-        public int Pump { get; set; }
+        public int PrimaryPump { get; set; }
+
+        public int SecondaryPump { get; set; }
 
         public int Transfer { get; set; }
         public int ExhaustMain { get; set; }
