@@ -1,5 +1,6 @@
 ﻿using HY.IO.Ports.Extentions;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace HY.IO.Ports
 {
@@ -13,6 +14,9 @@ namespace HY.IO.Ports
             this.controller = controller;
             this.setting = setting;
         }
+
+        public DateTime StartTime { get; private set; }
+        public DateTime StopTime { get; private set; }
 
         /// <summary>
         ///
@@ -34,12 +38,14 @@ namespace HY.IO.Ports
         {
             var index = PortIndex(setting.CurrentValue);
             controller.Turn(index, Power.On);
+            StartTime = DateTime.Now;
         }
 
         public virtual void TurnOff()
         {
             var index = PortIndex(setting.CurrentValue);
             controller.Turn(index, Power.Off);
+            StopTime = DateTime.Now;
         }
     }
 }

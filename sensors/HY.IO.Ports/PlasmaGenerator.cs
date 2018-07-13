@@ -3,15 +3,27 @@ using Microsoft.Extensions.Options;
 
 namespace HY.IO.Ports
 {
-    public class PlasmaGenerator : PowerEquipment
+    public class PrimaryPlasmaGenerator : PowerEquipment
     {
-        public PlasmaGenerator(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
+        public PrimaryPlasmaGenerator(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
         {
         }
 
         protected override int PortIndex(DeviceSetting setting)
         {
-            return setting.PowerControllerSetting.PlasmaGenerator;
+            return setting.PowerControllerSetting.PrimaryPlasmaGenerator;
+        }
+    }
+
+    public class SecondaryPlasmaGenerator : PowerEquipment
+    {
+        public SecondaryPlasmaGenerator(IPowerController controller, IOptionsMonitor<DeviceSetting> setting) : base(controller, setting)
+        {
+        }
+
+        protected override int PortIndex(DeviceSetting setting)
+        {
+            return setting.PowerControllerSetting.SecondaryPlasmaGenerator;
         }
     }
 }

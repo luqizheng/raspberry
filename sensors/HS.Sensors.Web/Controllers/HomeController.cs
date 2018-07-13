@@ -86,8 +86,12 @@ namespace HS.Sensors.Web.Controllers
                     setting.CurrentValue.PowerControllerSetting.SecondaryPump = parameter.PowerIndex;
                     break;
 
-                case "PlasmaGenerator":
-                    setting.CurrentValue.PowerControllerSetting.PlasmaGenerator = parameter.PowerIndex;
+                case "PrimaryPlasmaGenerator":
+                    setting.CurrentValue.PowerControllerSetting.PrimaryPlasmaGenerator = parameter.PowerIndex;
+                    break;
+
+                case "SecondaryPlasmaGenerator":
+                    setting.CurrentValue.PowerControllerSetting.SecondaryPlasmaGenerator = parameter.PowerIndex;
                     break;
 
                 case "ExhaustMain":
@@ -138,10 +142,13 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.GrayFan.TurnOn();
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
-                Terminal.PlasmaGenerator.TurnOn();
+                Terminal.PrimaryPlasmaGenerator.TurnOn();
+                Terminal.SecondaryPlasmaGenerator.TurnOn();
                 Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
+                Terminal.PrimaryPump.TurnOn();
+                Terminal.SecondaryPump.TurnOn();
             }
 
             HY.IO.Ports.Helper.ShellHelper.Bash("sudo reboot now");
@@ -156,10 +163,13 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.GrayFan.TurnOn();
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
-                Terminal.PlasmaGenerator.TurnOn();
+                Terminal.PrimaryPlasmaGenerator.TurnOn();
+                Terminal.SecondaryPlasmaGenerator.TurnOn();
                 Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
+                Terminal.PrimaryPump.TurnOn();
+                Terminal.SecondaryPump.TurnOn();
             }
 
             HY.IO.Ports.Helper.ShellHelper.Bash("sudo reboot now");

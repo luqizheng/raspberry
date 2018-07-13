@@ -41,9 +41,11 @@ namespace HS.Sensors.Web.Controllers
                 ExhaustMain = terminal.ExhaustMain.PowerStatus,
                 ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
                 GrayFan = terminal.GrayFan.PowerStatus,
-                PlasmaGenerator = terminal.PlasmaGenerator.PowerStatus,
+                PrimaryPlasmaGenerator = terminal.PrimaryPlasmaGenerator.PowerStatus,
+                SecondaryPlasmaGenerator = terminal.SecondaryPlasmaGenerator.PowerStatus,
                 Pulverizer = terminal.Pulverizer.PowerStatus,
-                Pump = terminal.PrimaryPump.PowerStatus,
+                PrimaryPump = terminal.PrimaryPump.PowerStatus,
+                SecondaryPump = terminal.SecondaryPump.PowerStatus,
                 Transfer = terminal.Transfer.PowerStatus,
                 UVLight = terminal.UVLight.PowerStatus,
             };
@@ -134,9 +136,9 @@ namespace HS.Sensors.Web.Controllers
         public IActionResult PlasmaGenerator(EqipmentParameter enable)
         {
             if (enable.Power == Power.On)
-                terminal.PlasmaGenerator.TurnOn();
+                terminal.PrimaryPlasmaGenerator.TurnOn();
             else
-                terminal.PlasmaGenerator.TurnOff();
+                terminal.PrimaryPlasmaGenerator.TurnOff();
 
             return this.Ok(true);
         }

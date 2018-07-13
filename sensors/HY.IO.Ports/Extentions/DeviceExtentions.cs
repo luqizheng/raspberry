@@ -18,7 +18,8 @@ namespace HY.IO.Ports.Extentions
             service.AddTransient<SecondaryPump>();
             service.AddTransient<ExhaustSlave>();
             service.AddTransient<ExhaustMain>();
-            service.AddTransient<PlasmaGenerator>();
+            service.AddTransient<PrimaryPlasmaGenerator>();
+            service.AddTransient<SecondaryPlasmaGenerator>();
             service.AddTransient<Transfer>();
             service.AddSingleton<GarbageTerminal>();
             service.AddTransient<ReactionCabin>();

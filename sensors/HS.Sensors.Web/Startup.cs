@@ -89,27 +89,28 @@ namespace HS.Sensors.Web
         private void Send(object state)
         {
             var context = (ServiceProvider)state;
-            var Terminal = context.GetService<GarbageTerminal>();
+            var terminal = context.GetService<GarbageTerminal>();
             var status = new
             {
-                Terminal.Enable,
-                Terminal.TransferModelEnable,
+                terminal.Enable,
+                terminal.TransferModelEnable,
                 OpenClose = new
                 {
-                    Terminal.ReactionCabin.IsFull,
-                    Terminal.ReactionCabin.IsEmpty,
+                    terminal.ReactionCabin.IsFull,
+                    terminal.ReactionCabin.IsEmpty,
                 },
                 Power = new
                 {
-                    ExhaustMain = Terminal.ExhaustMain.PowerStatus,
-                    ExhaustSlave = Terminal.ExhaustSlave.PowerStatus,
-                    GrayFan = Terminal.GrayFan.PowerStatus,
-                    PlasmaGenerator = Terminal.PlasmaGenerator.PowerStatus,
-                    Pulverizer = Terminal.Pulverizer.PowerStatus,
-                    PrimaryPump = Terminal.PrimaryPump.PowerStatus,
-                    SecondaryPump = Terminal.SecondaryPump.PowerStatus,
-                    UVLight = Terminal.UVLight.PowerStatus,
-                    Transfer = Terminal.Transfer.PowerStatus
+                    ExhaustMain = terminal.ExhaustMain.PowerStatus,
+                    ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
+                    GrayFan = terminal.GrayFan.PowerStatus,
+                    PrimaryPlasmaGenerator = terminal.PrimaryPlasmaGenerator.PowerStatus,
+                    SecondaryPlasmaGenerator = terminal.SecondaryPlasmaGenerator.PowerStatus,
+                    Pulverizer = terminal.Pulverizer.PowerStatus,
+                    PrimaryPump = terminal.PrimaryPump.PowerStatus,
+                    SecondaryPump = terminal.SecondaryPump.PowerStatus,
+                    Transfer = terminal.Transfer.PowerStatus,
+                    UVLight = terminal.UVLight.PowerStatus,
                 }
             };
             var hubContext = context.GetService<IHubContext<GarbageTerminalHub>>();
