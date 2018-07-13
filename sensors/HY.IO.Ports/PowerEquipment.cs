@@ -4,7 +4,19 @@ using System;
 
 namespace HY.IO.Ports
 {
-    public abstract class PowerEquipment
+    public interface IPowerEquipment
+    {
+        DateTime StartTime { get; }
+        DateTime StopTime { get; }
+
+        void TurnOn();
+
+        void TurnOff();
+
+        Power PowerStatus { get; }
+    }
+
+    public abstract class PowerEquipment : IPowerEquipment
     {
         private readonly IPowerController controller;
         protected readonly IOptionsMonitor<DeviceSetting> setting;

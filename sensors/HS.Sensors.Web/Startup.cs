@@ -37,8 +37,8 @@ namespace HS.Sensors.Web
             services.AddSingleton<DAM>(sp =>
             {
                 var deviceSetting = sp.GetRequiredService<IOptionsMonitor<DeviceSetting>>();
-                var logger = sp.GetRequiredService<ILogger<DAM0808>>();
-                return new DAM0808(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
+                var logger = sp.GetRequiredService<ILogger<DAM0404>>();
+                return new DAM0404(logger, deviceSetting.CurrentValue.PowerControllerSetting.ComPath);
             });
             services.AddControllerWatch<DAMPowerController, DAMPowerController>();
             services.AddSignalR(options =>
@@ -104,8 +104,8 @@ namespace HS.Sensors.Web
                     ExhaustMain = terminal.ExhaustMain.PowerStatus,
                     ExhaustSlave = terminal.ExhaustSlave.PowerStatus,
                     GrayFan = terminal.GrayFan.PowerStatus,
-                    PrimaryPlasmaGenerator = terminal.PrimaryPlasmaGenerator.PowerStatus,
-                    SecondaryPlasmaGenerator = terminal.SecondaryPlasmaGenerator.PowerStatus,
+                    PrimaryPlasmaGenerator = terminal.PlasmaGeneratorGroup.Primary.PowerStatus,
+                    SecondaryPlasmaGenerator = terminal.PlasmaGeneratorGroup.Second.PowerStatus,
                     Pulverizer = terminal.Pulverizer.PowerStatus,
                     PrimaryPump = terminal.PrimaryPump.PowerStatus,
                     SecondaryPump = terminal.SecondaryPump.PowerStatus,

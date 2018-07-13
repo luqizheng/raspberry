@@ -17,40 +17,32 @@ namespace HY.IO.Ports
         private Task turnOffTask;
         private Task turnOnTask;
 
-        private Timer plasmaGeneratorTimer;
-        private PowerEquipment plasmaGeneoratorOnRunngin;
-        private DateTime plasmaGeneoratorStartTime;
-
         public GarbageTerminal(Pulverizer pulverizer,
-            GrayFan grayFan, PrimaryPump pump, PrimaryPlasmaGenerator plasmaGenerator, SecondaryPlasmaGenerator secondaryPlasmaGenerator,
+            GrayFan grayFan, PrimaryPump pump, PlasmaGeneratorGroup plasmaGenerator,
              ExhaustMain exhaustMain, ExhaustSlave exhaustSlave, Transfer transfer,
              ReactionCabin reactionCabin, UVLight uvLight, SecondaryPump secondary,
              IPowerController powerController, IOptionsMonitor<DeviceSetting> deviceSetting)
         {
+            Transfer = transfer;
             Pulverizer = pulverizer;
+
             GrayFan = grayFan;
+
             this.PrimaryPump = pump;
-            PrimaryPlasmaGenerator = plasmaGenerator;
-            SecondaryPlasmaGenerator = secondaryPlasmaGenerator;
+            this.SecondaryPump = secondary;
+
             ExhaustMain = exhaustMain;
             ExhaustSlave = exhaustSlave;
-            Transfer = transfer;
+
             ReactionCabin = reactionCabin;
             UVLight = uvLight;
             this.controller = powerController;
             DeviceSetting = deviceSetting;
             this.GrayFan.Terminal = this;
-            this.SecondaryPump = secondary;
 
-            //plasmaGeneratorTimer = new Timer(plasmaGeneratorSwitch, null, 10 * 1000, 10 * 1000);
+            PlasmaGeneratorGroup = plasmaGenerator;
+            plasmaGenerator.Terminal = this;
         }
-
-        //private void plasmaGeneratorSwitch(object state)
-        //{
-        //    if (Enable)
-        //    {
-        //    }
-        //}
 
         /// <summary>
         /// 机械是否启动
@@ -60,7 +52,7 @@ namespace HY.IO.Ports
             get
             {
                 return PrimaryPump.PowerStatus == Power.On
-                    || PrimaryPlasmaGenerator.PowerStatus == Power.On
+                    || PlasmaGeneratorGroup.PowerStatus == Power.On
                     || ExhaustMain.PowerStatus == Power.On
                     || UVLight.PowerStatus == Power.On
                     || ExhaustSlave.PowerStatus == Power.On;
@@ -85,9 +77,7 @@ namespace HY.IO.Ports
         /// <summary>
         /// 等离子发生器
         /// </summary>
-        public PrimaryPlasmaGenerator PrimaryPlasmaGenerator { get; set; }
-
-        public SecondaryPlasmaGenerator SecondaryPlasmaGenerator { get; set; }
+        public PlasmaGeneratorGroup PlasmaGeneratorGroup { get; set; }
 
         /// <summary>
         /// 粉碎器，闸刀
@@ -125,6 +115,8 @@ namespace HY.IO.Ports
                 return Pulverizer.PowerStatus == Power.On || Transfer.PowerStatus == Power.On;
             }
         }
+
+        internal bool TurnOffing { get; private set; }
 
         public void Dispose()
         {
@@ -192,7 +184,7 @@ namespace HY.IO.Ports
             {
                 terminalTurnOnTask.Cancel();
             }
-
+            TurnOffing = true;
             //无论设备么情况，传输和碎料必须停止
             this.Pulverizer.TurnOff();
             this.Transfer.TurnOff();
@@ -208,12 +200,14 @@ namespace HY.IO.Ports
                    PrimaryPump.TurnOff();
                    SecondaryPump.TurnOff();
                    Thread.Sleep(200);
-                   PrimaryPlasmaGenerator.TurnOff();
-                   SecondaryPlasmaGenerator.TurnOff();
+                   PlasmaGeneratorGroup.TurnOff();
                    UVLight.TurnOff();
 
                    this.GrayFan.TurnOff();
-               }, token);
+               }, token).ContinueWith(task =>
+               {
+                   TurnOffing = false;
+               });
         }
 
         /// <summary>
@@ -238,8 +232,8 @@ namespace HY.IO.Ports
                      PrimaryPump.TurnOn();
                      SecondaryPump.TurnOn();
                      Thread.Sleep(5000);
-                     PrimaryPlasmaGenerator.TurnOn();
-                     SecondaryPlasmaGenerator.TurnOn();
+                     PlasmaGeneratorGroup.TurnOn();
+
                      UVLight.TurnOn();
 
                      Thread.Sleep(3000);

@@ -142,8 +142,8 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.GrayFan.TurnOn();
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
-                Terminal.PrimaryPlasmaGenerator.TurnOn();
-                Terminal.SecondaryPlasmaGenerator.TurnOn();
+                Terminal.PlasmaGeneratorGroup.TurnOn();
+
                 Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
@@ -163,8 +163,7 @@ namespace HS.Sensors.Web.Controllers
                 Terminal.GrayFan.TurnOn();
                 Terminal.Pulverizer.TurnOff();
                 Terminal.Transfer.TurnOff();
-                Terminal.PrimaryPlasmaGenerator.TurnOn();
-                Terminal.SecondaryPlasmaGenerator.TurnOn();
+                Terminal.PlasmaGeneratorGroup.TurnOn();
                 Terminal.UVLight.TurnOn();
                 Terminal.ExhaustMain.TurnOn();
                 Terminal.ExhaustSlave.TurnOn();
