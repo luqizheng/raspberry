@@ -18,19 +18,10 @@
         </div>
     </div>
 
-
-
-
     <div class="col-xs-9">
         @Html.Partial("_equipments")
     </div>
-
-
 </div>
-
-
-
-
 
 @section Scripts{
     <script type="text/javascript">
@@ -63,8 +54,6 @@
                         setTransferModelEnable(!isON, true)
                     });
 
-
-
             })
             //送料
             $auto_transfer.click(function () {
@@ -78,7 +67,6 @@
 
                         setTransferModelEnable(!isON, true);
                     });
-
 
             })
             /*
@@ -103,7 +91,6 @@
 
             function SetDeviceEnable(enable, inProcessing) {
                 var currentState = $btnTurnOn.hasClass("on");
-
 
                 if (inProcessing) {
                     $auto_transfer.prop("disabled", false)
@@ -139,7 +126,6 @@
 
                     //$auto_transfer.toggleClass("btn-danger", enable).removeClass("btn-warning");
                 }
-
 
             }
         });

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HY.IO.Ports", "HY.IO.Ports\HY.IO.Ports.csproj", "{066D1B5E-D2A3-48B3-AC1F-D830DE7B66AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HS.Sensors.Web", "HS.Sensors.Web\HS.Sensors.Web.csproj", "{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HY.Sensors.Web", "HS.Sensors.Web\HY.Sensors.Web.csproj", "{C9AEFBC5-536A-46BA-94C9-A34FC29CD1E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -19,6 +19,10 @@ namespace HY.IO.Ports.Devices.DAM
 
         private bool isRunning = false;
 
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="state"></param>
         private void GetStatus(object state)
         {
             if (isRunning)

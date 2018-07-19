@@ -65,17 +65,18 @@ namespace HY.IO.Ports
 
         public void Close()
         {
-            device.Close();
+            if (device.IsOpen)
+                device.Close();
         }
 
         private Queue<byte[]> commands = new Queue<byte[]>();
 
-        public byte[] Write(byte[] bytes)
+        public byte[] Write(byte[] bytes, int sleep = 200)
         {
             lock (this)
             {
                 device.Write(bytes, 0, bytes.Length);
-                Thread.Sleep(200);
+                Thread.Sleep(sleep);
                 var len = device.BytesToRead;
                 var r = new Byte[len];
                 device.Read(r, 0, len);

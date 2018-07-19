@@ -11,13 +11,16 @@ namespace HY.IO.Ports
         private Timer plasmaGeneratorTimer;
         private DateTime startTime;
         private DateTime stopTime;
-        private PowerEquipment plasmaGeneoratorOnRunngin;
+
+        private readonly DeviceSetting setting;
+
         //private DateTime plasmaGeneoratorStartTime;
 
-        public PlasmaGeneratorGroup(PrimaryPlasmaGenerator primary, SecondaryPlasmaGenerator second)
+        public PlasmaGeneratorGroup(PrimaryPlasmaGenerator primary, SecondaryPlasmaGenerator second, DeviceSetting setting)
         {
             Primary = primary;
             Second = second;
+            this.setting = setting;
             plasmaGeneratorTimer = new Timer(switchEq, null, 10000, 10000);
         }
 
@@ -93,7 +96,7 @@ namespace HY.IO.Ports
         {
             get
             {
-                return this.PowerStatus == Power.On && (DateTime.Now - StartTime).TotalSeconds > 60 * 20;
+                return this.PowerStatus == Power.On && (DateTime.Now - StartTime).TotalSeconds > this.setting.CurrentValue.PlasmaRuntime.SwitchTimeSeconds;
             }
         }
     }

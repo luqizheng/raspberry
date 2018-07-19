@@ -1,5 +1,3 @@
-using System;
-
 namespace HS.Sensors.Web.Models
 {
     public class ErrorViewModel

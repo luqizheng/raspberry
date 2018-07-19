@@ -47,7 +47,8 @@ namespace HY.IO.Ports.Devices.DAM
 
             for (int i = 0; i < this.OptocouplerPortsCount; i++)
                 OptocouplerPort[i] = false;
-
+            for (int i = 0; i < this.AnalogInputCount; i++)
+                AnalogInput[i] = 0;
             device.Open();
         }
 
@@ -74,8 +75,12 @@ namespace HY.IO.Ports.Devices.DAM
         //  private AutoResetEvent atutResetEvet = new AutoResetEvent(false);
         public IDictionary<int, bool> RelayPort { get; } = new Dictionary<int, bool>();
 
+        public IDictionary<int, int> AnalogInput { get; } = new Dictionary<int, int>();
+
         protected abstract int OptocouplerPortsCount { get; }
         protected abstract int RelayPortsCount { get; }
+
+        protected abstract int AnalogInputCount { get; }
 
         public virtual bool Close(int port)
         {
@@ -138,7 +143,7 @@ namespace HY.IO.Ports.Devices.DAM
             //TODO
             return;
             const int port = -1; //查所有,暂时查询所有，因为返回结果速度差不多，没必要单个查
-            var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1, QueryType.Optocoupler);
+            var command = MakePowerQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1, QueryType.Optocoupler);
 
             var openByAnother = false;
             if (device.IsOpened)
@@ -188,7 +193,7 @@ namespace HY.IO.Ports.Devices.DAM
         public void RefreshRelayStatus()
         {
             const int port = -1; //查所有
-            var command = MakeQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1, QueryType.Relay);
+            var command = MakePowerQueryCommand(port == -1 ? 0 : port, port == -1 ? this.RelayPortsCount : 1, QueryType.Relay);
 
             var openByAnother = false;
             if (device.IsOpened)
@@ -229,6 +234,50 @@ namespace HY.IO.Ports.Devices.DAM
             }
         }
 
+        public void RefreshAnalogStatus()
+        {
+            var command = MakeAIQueryCommand();
+
+            var openByAnother = false;
+            if (device.IsOpened)
+            {
+                openByAnother = true;
+            }
+            else
+            {
+                device.Open();
+            }
+
+            var returnValue = device.Write(command);
+            if (!Verify(returnValue)) return;
+
+            int datalength = returnValue[2];
+            var position = 0;
+            for (var i = 3; i < datalength; i++, position++)
+            {
+                this.AnalogInput[position] = returnValue[i];
+            }
+
+            if (!openByAnother)
+                device.Close();
+        }
+
+        protected byte[] MakeAIQueryCommand()
+        {
+            var result = new byte[8];
+            result[0] = address;
+            result[1] = Convert.ToByte(0x04);
+
+            result[3] = 0;
+
+            result[5] = Convert.ToByte(this.AnalogInputCount);
+
+            var checkSum = crc.ComputeHash(result, 0, 6);
+            result[6] = checkSum[checkSum.Length - 1];
+            result[7] = checkSum[checkSum.Length - 2];
+            return result;
+        }
+
         /// <summary>
         /// 继电器开关
         /// </summary>
@@ -252,7 +301,7 @@ namespace HY.IO.Ports.Devices.DAM
             return result;
         }
 
-        protected byte[] MakeQueryCommand(int start, int length, QueryType type)
+        protected byte[] MakePowerQueryCommand(int start, int length, QueryType type)
         {
             //FE 01 00 00 00 04 29 C6;
             var result = new byte[8];

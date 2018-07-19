@@ -11,5 +11,7 @@ namespace HY.IO.Ports.Devices.DAM
         protected override int RelayPortsCount => 4;
 
         protected override int OptocouplerPortsCount => 4;
+
+        protected override int AnalogInputCount => 0;
     }
 }

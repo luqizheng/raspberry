@@ -3,6 +3,7 @@
     public class DeviceSetting
     {
         /// <summary>
+
         ///
         /// </summary>
         public PowerControllerSetting PowerControllerSetting { get; set; } = new PowerControllerSetting();
@@ -21,6 +22,13 @@
         /// 上料模块的运行时间设置
         /// </summary>
         public TransferRuntime TransferRuntime { get; set; } = new TransferRuntime();
+
+        public PlasmaRuntime PlasmaRuntime { get; set; } = new PlasmaRuntime();
+    }
+
+    public class PlasmaRuntime
+    {
+        public int SwitchTimeSeconds { get; set; } = 60 * 20;
     }
 
     /// <summary>

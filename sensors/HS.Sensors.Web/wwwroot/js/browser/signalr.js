@@ -1,4 +1,4 @@
-/** 
+/**
  * @overview ASP.NET Core SignalR JavaScript Client.
  * @version 1.0.0.
  * @license
@@ -204,7 +204,6 @@ function __importDefault(mod) {
     return (mod && mod.__esModule) ? mod : { default: mod };
 }
 
-
 var tslib_1 = Object.freeze({
 	__extends: __extends,
 	__assign: __assign,
@@ -246,8 +245,6 @@ var es6Promise_auto = createCommonjsModule(function (module, exports) {
 function isFunction(x) {
   return typeof x === 'function';
 }
-
-
 
 var _isArray = void 0;
 if (Array.isArray) {
@@ -395,7 +392,6 @@ function then(onFulfillment, onRejection) {
   }
 
   var _state = parent._state;
-
 
   if (_state) {
     var callback = arguments[_state - 1];
@@ -593,7 +589,6 @@ function subscribe(parent, child, onFulfillment, onRejection) {
   var _subscribers = parent._subscribers;
   var length = _subscribers.length;
 
-
   parent._onerror = null;
 
   _subscribers[length] = child;
@@ -757,7 +752,6 @@ var Enumerator = function () {
     var c = this._instanceConstructor;
     var resolve$$1 = c.resolve;
 
-
     if (resolve$$1 === resolve$1) {
       var _then = getThen(entry);
 
@@ -782,7 +776,6 @@ var Enumerator = function () {
 
   Enumerator.prototype._settledAt = function _settledAt(state, i, value) {
     var promise = this.promise;
-
 
     if (promise._state === PENDING) {
       this._remaining--;
@@ -1023,7 +1016,6 @@ function needsNew() {
   settled state.  So a promise that *resolves* a promise that rejects will
   itself reject, and a promise that *resolves* a promise that fulfills will
   itself fulfill.
-
 
   Basic Usage:
   ------------
@@ -1297,7 +1289,6 @@ var Promise$2 = function () {
   @return {Promise}
   */
 
-
   Promise.prototype.catch = function _catch(onRejection) {
     return this.then(null, onRejection);
   };
@@ -1305,9 +1296,9 @@ var Promise$2 = function () {
   /**
     `finally` will be invoked regardless of the promise's fate just as native
     try/catch/finally behaves
-  
+
     Synchronous example:
-  
+
     ```js
     findAuthor() {
       if (Math.random() > 0.5) {
@@ -1315,7 +1306,7 @@ var Promise$2 = function () {
       }
       return new Author();
     }
-  
+
     try {
       return findAuthor(); // succeed or fail
     } catch(error) {
@@ -1325,9 +1316,9 @@ var Promise$2 = function () {
       // doesn't affect the return value
     }
     ```
-  
+
     Asynchronous example:
-  
+
     ```js
     findAuthor().catch(function(reason){
       return findOtherAuther();
@@ -1335,12 +1326,11 @@ var Promise$2 = function () {
       // author was either found, or not
     });
     ```
-  
+
     @method finally
     @param {Function} callback
     @return {Promise}
   */
-
 
   Promise.prototype.finally = function _finally(callback) {
     var promise = this;
@@ -1410,12 +1400,7 @@ Promise$2.Promise = Promise$2;
 Promise$2.polyfill();
 
 return Promise$2;
-
 })));
-
-
-
-
 });
 
 var Errors = createCommonjsModule(function (module, exports) {
@@ -1464,7 +1449,6 @@ var TimeoutError = /** @class */ (function (_super) {
     return TimeoutError;
 }(Error));
 exports.TimeoutError = TimeoutError;
-
 });
 
 unwrapExports(Errors);
@@ -1495,7 +1479,6 @@ var LogLevel;
     /** The highest possible log level. Used when configuring logging to indicate that no log messages should be emitted. */
     LogLevel[LogLevel["None"] = 6] = "None";
 })(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
-
 });
 
 unwrapExports(ILogger);
@@ -1503,8 +1486,6 @@ var ILogger_1 = ILogger.LogLevel;
 
 var HttpClient_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
 
 /** Represents an HTTP response. */
 var HttpResponse = /** @class */ (function () {
@@ -1592,7 +1573,6 @@ var DefaultHttpClient = /** @class */ (function (_super) {
     return DefaultHttpClient;
 }(HttpClient));
 exports.DefaultHttpClient = DefaultHttpClient;
-
 });
 
 unwrapExports(HttpClient_1);
@@ -1622,7 +1602,6 @@ var TextMessageFormat = /** @class */ (function () {
     return TextMessageFormat;
 }());
 exports.TextMessageFormat = TextMessageFormat;
-
 });
 
 unwrapExports(TextMessageFormat_1);
@@ -1677,7 +1656,6 @@ var HandshakeProtocol = /** @class */ (function () {
     return HandshakeProtocol;
 }());
 exports.HandshakeProtocol = HandshakeProtocol;
-
 });
 
 unwrapExports(HandshakeProtocol_1);
@@ -1703,7 +1681,6 @@ var MessageType;
     /** Indicates the message is a Close message and implements the {@link CloseMessage} interface. */
     MessageType[MessageType["Close"] = 7] = "Close";
 })(MessageType = exports.MessageType || (exports.MessageType = {}));
-
 });
 
 unwrapExports(IHubProtocol);
@@ -1723,7 +1700,6 @@ var NullLogger = /** @class */ (function () {
     return NullLogger;
 }());
 exports.NullLogger = NullLogger;
-
 });
 
 unwrapExports(Loggers);
@@ -1731,8 +1707,6 @@ var Loggers_1 = Loggers.NullLogger;
 
 var Utils = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
 
 var Arg = /** @class */ (function () {
     function Arg() {
@@ -1896,7 +1870,6 @@ var ConsoleLogger = /** @class */ (function () {
     return ConsoleLogger;
 }());
 exports.ConsoleLogger = ConsoleLogger;
-
 });
 
 unwrapExports(Utils);
@@ -1911,10 +1884,6 @@ var Utils_8 = Utils.ConsoleLogger;
 
 var HubConnection_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
 
 var DEFAULT_TIMEOUT_IN_MS = 30 * 1000;
 /** Represents a connection to a SignalR Hub. */
@@ -2292,7 +2261,6 @@ var HubConnection = /** @class */ (function () {
     return HubConnection;
 }());
 exports.HubConnection = HubConnection;
-
 });
 
 unwrapExports(HubConnection_1);
@@ -2321,7 +2289,6 @@ var TransferFormat;
     /** Specifies that binary data will be transmitted over the connection. */
     TransferFormat[TransferFormat["Binary"] = 2] = "Binary";
 })(TransferFormat = exports.TransferFormat || (exports.TransferFormat = {}));
-
 });
 
 unwrapExports(ITransport);
@@ -2363,7 +2330,6 @@ var AbortController = /** @class */ (function () {
     return AbortController;
 }());
 exports.AbortController = AbortController;
-
 });
 
 unwrapExports(AbortController_1);
@@ -2371,11 +2337,6 @@ var AbortController_2 = AbortController_1.AbortController;
 
 var LongPollingTransport_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
-
 
 var SHUTDOWN_TIMEOUT = 5 * 1000;
 // Not exported from 'index', this type is internal.
@@ -2590,7 +2551,6 @@ var LongPollingTransport = /** @class */ (function () {
     return LongPollingTransport;
 }());
 exports.LongPollingTransport = LongPollingTransport;
-
 });
 
 unwrapExports(LongPollingTransport_1);
@@ -2598,9 +2558,6 @@ var LongPollingTransport_2 = LongPollingTransport_1.LongPollingTransport;
 
 var ServerSentEventsTransport_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
 
 var ServerSentEventsTransport = /** @class */ (function () {
     function ServerSentEventsTransport(httpClient, accessTokenFactory, logger, logMessageContent) {
@@ -2701,7 +2658,6 @@ var ServerSentEventsTransport = /** @class */ (function () {
     return ServerSentEventsTransport;
 }());
 exports.ServerSentEventsTransport = ServerSentEventsTransport;
-
 });
 
 unwrapExports(ServerSentEventsTransport_1);
@@ -2709,9 +2665,6 @@ var ServerSentEventsTransport_2 = ServerSentEventsTransport_1.ServerSentEventsTr
 
 var WebSocketTransport_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
 
 var WebSocketTransport = /** @class */ (function () {
     function WebSocketTransport(accessTokenFactory, logger, logMessageContent) {
@@ -2794,7 +2747,6 @@ var WebSocketTransport = /** @class */ (function () {
     return WebSocketTransport;
 }());
 exports.WebSocketTransport = WebSocketTransport;
-
 });
 
 unwrapExports(WebSocketTransport_1);
@@ -2802,13 +2754,6 @@ var WebSocketTransport_2 = WebSocketTransport_1.WebSocketTransport;
 
 var HttpConnection_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
-
-
-
 
 var MAX_REDIRECTS = 100;
 var HttpConnection = /** @class */ (function () {
@@ -3161,7 +3106,6 @@ exports.HttpConnection = HttpConnection;
 function transportMatches(requestedTransport, actualTransport) {
     return !requestedTransport || ((actualTransport & requestedTransport) !== 0);
 }
-
 });
 
 unwrapExports(HttpConnection_1);
@@ -3169,10 +3113,6 @@ var HttpConnection_2 = HttpConnection_1.HttpConnection;
 
 var JsonHubProtocol_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
 
 var JSON_HUB_PROTOCOL_NAME = "json";
 /** Implements the JSON Hub Protocol. */
@@ -3272,7 +3212,6 @@ var JsonHubProtocol = /** @class */ (function () {
     return JsonHubProtocol;
 }());
 exports.JsonHubProtocol = JsonHubProtocol;
-
 });
 
 unwrapExports(JsonHubProtocol_1);
@@ -3280,10 +3219,6 @@ var JsonHubProtocol_2 = JsonHubProtocol_1.JsonHubProtocol;
 
 var HubConnectionBuilder_1 = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-
-
-
-
 
 /** A builder for configuring {@link HubConnection} instances. */
 var HubConnectionBuilder = /** @class */ (function () {
@@ -3349,7 +3284,6 @@ exports.HubConnectionBuilder = HubConnectionBuilder;
 function isLogger(logger) {
     return logger.log !== undefined;
 }
-
 });
 
 unwrapExports(HubConnectionBuilder_1);
@@ -3382,7 +3316,6 @@ exports.TransferFormat = ITransport.TransferFormat;
 exports.NullLogger = Loggers.NullLogger;
 
 exports.JsonHubProtocol = JsonHubProtocol_1.JsonHubProtocol;
-
 });
 
 unwrapExports(cjs);
@@ -3428,12 +3361,10 @@ if (!Uint8Array.prototype.forEach) {
     });
 }
 tslib_1.__exportStar(cjs, exports);
-
 });
 
 var browserIndex$1 = unwrapExports(browserIndex);
 
 return browserIndex$1;
-
 })));
 //# sourceMappingURL=signalr.js.map

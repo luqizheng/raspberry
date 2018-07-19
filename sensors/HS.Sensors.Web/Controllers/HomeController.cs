@@ -1,12 +1,12 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using HS.Sensors.Web.Models;
-using HY.IO.Ports.Extentions;
-using Microsoft.Extensions.Options;
+﻿using HS.Sensors.Web.Models;
 using HY.IO.Ports;
-using System.IO;
-using Newtonsoft.Json;
+using HY.IO.Ports.Extentions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Diagnostics;
+using System.IO;
 
 namespace HS.Sensors.Web.Controllers
 {
@@ -110,6 +110,14 @@ namespace HS.Sensors.Web.Controllers
                     setting.CurrentValue.PowerControllerSetting.UVLight = parameter.PowerIndex;
                     break;
             }
+            Save();
+            return Ok("true");
+        }
+
+        [HttpPost]
+        public IActionResult PlasmaGenerator(PlasmaRuntime runtime)
+        {
+            setting.CurrentValue.PlasmaRuntime.SwitchTimeSeconds = runtime.SwitchTimeSeconds;
             Save();
             return Ok("true");
         }
